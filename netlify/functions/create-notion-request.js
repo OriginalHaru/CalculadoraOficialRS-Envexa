@@ -1,5 +1,5 @@
 const { Client } = require("@notionhq/client");
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
@@ -19,99 +19,151 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "Missing required customer fields" }) };
   }
 
+  const n = (v) => (typeof v === "number" ? v.toFixed(2) : "—");
+
   try {
     // ── 1. Crear página en Notion ───────────────────────────────────────────
     const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-    const rangeText = `USD ${totals?.total_usd_min?.toFixed(2)} – ${totals?.total_usd_max?.toFixed(2)}`;
+    const cajasResumen = (boxes || []).map((b, i) => {
+      const prods = (b.products || []).map(p =>
+        `${p.name} x${p.qty} — FOB USD ${p.fob_unit_usd}/u${p.hs_code ? ` (HS: ${p.hs_code})` : ""}`
+      ).join(", ");
+      return `Caja ${i + 1} (${b.name}): ${b.weight_kg}kg real / ${(b.weight_chargeable_kg||0).toFixed(2)}kg cobrable | ${prods}`;
+    }).join("\n");
+
+    const resumenFinanciero = [
+      `Courier: ${shipping?.courier}`,
+      `FOB total: USD ${n(totals?.fob_total_usd)}`,
+      `Flete: USD ${n(totals?.freight_usd)} (USD ${n(totals?.freight_rate_per_kg)}/kg)`,
+      `Seguro: USD ${n(totals?.insurance_usd)}`,
+      `DAI 35%: USD ${n(totals?.duties_usd)}`,
+      `Tasa Est. 3%: USD ${n(totals?.tasa_est_usd)}`,
+      `IVA 21%: USD ${n(totals?.iva_usd)}`,
+      `Gastos doc.: USD ${n(totals?.documental_costs_usd)}`,
+      `Gastos destino: USD ${n(totals?.destination_costs_usd)}`,
+      `Gestión ENVEXA: USD ${n(totals?.envexa_fee_usd)}`,
+      `TOTAL: USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars||0).toFixed(0)}`,
+      `TC oficial: $${n(totals?.exchange_rate_ars)} ARS/USD`,
+    ].join(" | ");
+
+    const cajasYProductosTexto = `${resumenFinanciero}\n\n${cajasResumen}`.substring(0, 2000);
 
     const page = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
       properties: {
-        // TODO: confirmar los nombres exactos de las propiedades de tu DB de Notion
-        "Nombre": {
-          title: [{ text: { content: customer.name } }]
+        "Cliente": {
+          title: [{ text: { content: `⭐ ${customer.name}` } }]
         },
-        "Email": {
+        "Correo Electronico": {
           email: customer.email
         },
-        "Teléfono": {
+        "Numero de Telefono": {
           phone_number: customer.phone || ""
         },
         "CUIT": {
           rich_text: [{ text: { content: customer.cuit || "" } }]
         },
-        "Dirección": {
+        "Dirección de Entrega": {
           rich_text: [{ text: { content: customer.address || "" } }]
+        },
+        "Canal Especial?": {
+          select: { name: body.canal_especial ? "SI" : "No" }
+        },
+        "Información de Cajas": {
+          rich_text: [{ text: { content: cajasYProductosTexto } }]
         },
         "Courier": {
           select: { name: shipping?.courier || "No especificado" }
         },
-        "FOB Total (USD)": {
-          number: totals?.fob_total_usd || 0
+        "Status": {
+          status: { name: "Solicitud Nueva" }
         },
-        "Total Estimado Min (USD)": {
-          number: totals?.total_usd_min || 0
+        "Fecha de Solicitud": {
+          date: { start: new Date().toISOString() }
         },
-        "Total Estimado Max (USD)": {
-          number: totals?.total_usd_max || 0
+        "Peso Total": {
+          number: totals?.weight_chargeable_kg || 0
         },
-        "Peso Cobrable (kg)": {
-          number: boxes?.reduce((s, b) => s + (b.weight_chargeable_kg || 0), 0) || 0
-        },
-        "Estado": {
-          select: { name: "Solicitud Nueva" }
+        "Precio x KG": {
+          number: totals?.price_per_kg || 0
         },
       },
     });
 
-    // ── 2. Agregar bloque de detalle como comentario en la página ───────────
-    const detailLines = [
-      `Courier: ${shipping?.courier}`,
-      `Flete estimado: USD ${totals?.freight_min_usd?.toFixed(2)} – ${totals?.freight_max_usd?.toFixed(2)}`,
-      `Seguro: USD ${totals?.insurance_usd?.toFixed(2)}`,
-      `DAI 35%: USD ${totals?.duties_min_usd?.toFixed(2)} – ${totals?.duties_max_usd?.toFixed(2)}`,
-      `Tasa Est. 3%: USD ${totals?.tasa_est_min_usd?.toFixed(2)} – ${totals?.tasa_est_max_usd?.toFixed(2)}`,
-      `IVA 21%: USD ${totals?.iva_min_usd?.toFixed(2)} – ${totals?.iva_max_usd?.toFixed(2)}`,
-      `Gastos doc.: USD ${totals?.documental_costs_usd?.toFixed(2)}`,
-      `Gastos destino: USD ${totals?.destination_costs_usd?.toFixed(2)}`,
-      `Gestión ENVEXA: USD ${totals?.envexa_fee_usd?.toFixed(2)}`,
-      `TOTAL: ${rangeText}`,
-      `TC USD oficial: $${totals?.exchange_rate_ars?.toFixed(2)} ARS`,
-      ``,
-      `Alertas de compliance: ${compliance_warnings?.length ? compliance_warnings.map(w => w.msg).join(" | ") : "Ninguna"}`,
-      ``,
-      `Cajas (${boxes?.length}):`,
-      ...(boxes || []).flatMap(b => [
-        `  ${b.name}: ${b.weight_kg}kg real, ${b.weight_chargeable_kg?.toFixed(2)}kg cobrable`,
-        ...(b.products || []).map(p =>
-          `    - ${p.name || "?"} x${p.qty} | FOB: USD ${p.fob_unit_usd} /u | HS: ${p.hs_code || "—"}`
-        ),
-      ]),
-    ].join("\n");
+    // ── 2. Agregar detalle financiero como bloques en la página ────────────
+    const warningsText = (compliance_warnings?.length)
+      ? compliance_warnings.join(" | ")
+      : "Ninguna";
 
-    await notion.comments.create({
-      parent: { page_id: page.id },
-      rich_text: [{ text: { content: detailLines.substring(0, 2000) } }],
+    const makeP = (text) => ({
+      object: "block",
+      type: "paragraph",
+      paragraph: { rich_text: [{ type: "text", text: { content: text.substring(0, 2000) } }] },
     });
 
-    // ── 3. Enviar email con PDF adjunto vía Resend ──────────────────────────
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const boxBlocks = (boxes || []).flatMap(b => [
+      makeP(`📦 ${b.name}: ${b.weight_kg}kg real / ${(b.weight_chargeable_kg||0).toFixed(2)}kg cobrable`),
+      ...(b.products || []).map(p =>
+        makeP(`   • ${p.name || "?"} x${p.qty} — FOB USD ${p.fob_unit_usd}/u${p.hs_code ? ` | HS: ${p.hs_code}` : ""}`)
+      ),
+    ]);
+
+    await notion.blocks.children.append({
+      block_id: page.id,
+      children: [
+        { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: "💰 Resumen financiero" } }] } },
+        makeP(`Courier: ${shipping?.courier}`),
+        makeP(`Flete aéreo: USD ${n(totals?.freight_usd)} (USD ${n(totals?.freight_rate_per_kg)}/kg)`),
+        makeP(`Seguro: USD ${n(totals?.insurance_usd)}`),
+        makeP(`DAI 35%: USD ${n(totals?.duties_usd)}`),
+        makeP(`Tasa Est. 3%: USD ${n(totals?.tasa_est_usd)}`),
+        makeP(`IVA 21%: USD ${n(totals?.iva_usd)}`),
+        makeP(`Gastos Despacho Exportación 🇨🇳: USD ${n(totals?.documental_costs_usd)}`),
+        makeP(`Gastos Despacho Importación 🇦🇷: USD ${n(totals?.destination_costs_usd)}`),
+        makeP(`Gestión ENVEXA: USD ${n(totals?.envexa_fee_usd)}`),
+        makeP(`Comisión bancaria: USD ${n(totals?.banking_fee_usd)}`),
+        makeP(`TOTAL: USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars||0).toFixed(0)}`),
+        makeP(`TC oficial: $${n(totals?.exchange_rate_ars)} ARS/USD`),
+        { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: "📦 Detalle de cajas" } }] } },
+        ...boxBlocks,
+        ...(compliance_warnings?.length ? [
+          { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: "⚠️ Alertas" } }] } },
+          ...compliance_warnings.map(w => ({
+            object: "block",
+            type: "bulleted_list_item",
+            bulleted_list_item: { rich_text: [{ type: "text", text: { content: w } }] }
+          }))
+        ] : []),
+      ],
+    });
+
+    // ── 3. Enviar email con PDF adjunto vía Hostinger SMTP ─────────────────
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.hostinger.com",
+      port: parseInt(process.env.SMTP_PORT || "465"),
+      secure: true,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
+
     const base64Data = (pdfBase64 || "").replace(/^data:application\/pdf;base64,/, "");
 
-    const emailRecipients = [customer.email];
-    if (process.env.ENVEXA_INTERNAL_EMAIL) {
-      emailRecipients.push(process.env.ENVEXA_INTERNAL_EMAIL);
-    }
+    const bcc = process.env.ENVEXA_INTERNAL_EMAIL || undefined;
 
     const boxesSummary = (boxes || [])
       .map(b => `• ${b.name}: ${b.products?.map(p => `${p.name} x${p.qty}`).join(", ")}`)
       .join("\n");
 
-    await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL,
-      to: emailRecipients,
-      subject: `Nueva solicitud de cotización ENVEXA — ${customer.name}`,
+    const totalText = `USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars || 0).toLocaleString("es-AR", { maximumFractionDigits: 0 })}`;
+
+    await transporter.sendMail({
+      from: `ENVEXA <${process.env.SMTP_USER}>`,
+      to: customer.email,
+      bcc,
+      subject: `Tu cotización de importación · ENVEXA`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #0b1f3a; padding: 24px; border-radius: 12px 12px 0 0;">
@@ -121,24 +173,28 @@ exports.handler = async (event) => {
           <div style="background: #f8fafc; padding: 24px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0;">
             <p style="color: #374151; font-size: 15px;">Hola <strong>${customer.name}</strong>,</p>
             <p style="color: #374151; font-size: 14px; line-height: 1.6;">
-              Adjuntamos el estimado de tu importación. Un asesor de <strong>ENVEXA</strong> se contactará en breve para confirmar el presupuesto final.
+              Recibimos tu solicitud. Adjuntamos el estimado de tu importación.
+              Un asesor de <strong>ENVEXA</strong> se contactará en las próximas 24 hs hábiles para confirmar el costo final.
             </p>
             <div style="background: white; border-radius: 8px; padding: 16px; margin: 16px 0; border: 1px solid #e2e8f0;">
-              <p style="font-size: 13px; color: #6b7280; margin: 0 0 8px;">RESUMEN</p>
+              <p style="font-size: 13px; color: #6b7280; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.05em;">Resumen</p>
               <table style="width:100%; font-size:14px; border-collapse:collapse;">
                 <tr><td style="padding:4px 0; color:#6b7280;">Courier</td><td style="text-align:right; font-weight:600;">${shipping?.courier}</td></tr>
-                <tr><td style="padding:4px 0; color:#6b7280;">FOB total</td><td style="text-align:right;">USD ${totals?.fob_total_usd?.toFixed(2)}</td></tr>
-                <tr><td style="padding:4px 0; color:#6b7280;">Peso cobrable</td><td style="text-align:right;">${boxes?.reduce((s,b)=>s+(b.weight_chargeable_kg||0),0)?.toFixed(2)} kg</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">FOB total</td><td style="text-align:right;">USD ${n(totals?.fob_total_usd)}</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Peso cobrable</td><td style="text-align:right;">${n(totals?.weight_chargeable_kg)} kg</td></tr>
                 <tr style="border-top:2px solid #e2e8f0;">
                   <td style="padding:8px 0 4px; font-weight:700; color:#111827;">TOTAL ESTIMADO</td>
-                  <td style="text-align:right; font-weight:700; color:#16a34a; font-size:16px;">${rangeText}</td>
+                  <td style="text-align:right; font-weight:700; color:#16a34a; font-size:16px;">${totalText}</td>
                 </tr>
               </table>
             </div>
             <p style="color:#374151; font-size:13px;"><strong>Productos incluidos:</strong></p>
             <pre style="font-size:12px; color:#6b7280; background:#f1f5f9; padding:12px; border-radius:6px; white-space:pre-wrap;">${boxesSummary}</pre>
-            <p style="color:#9ca3af; font-size:11px; margin-top:16px; line-height:1.5;">
-              <em>Los valores son estimativos. El costo final puede variar según el tipo de cambio oficial vigente al momento del despacho. TC usado: $${totals?.exchange_rate_ars?.toFixed(2)} ARS/USD.</em>
+            <p style="color:#374151; font-size:13px; margin-top:16px;">
+              Nuestro horario de atención es de lunes a viernes de 10:00 a 17:00 hs (hora Argentina).
+            </p>
+            <p style="color:#9ca3af; font-size:11px; margin-top:12px; line-height:1.5;">
+              <em>Los valores son estimativos y no constituyen una oferta formal. El costo final puede variar según el tipo de cambio oficial vigente al momento del despacho. TC usado: $${n(totals?.exchange_rate_ars)} ARS/USD.</em>
             </p>
             <hr style="border:none; border-top:1px solid #e2e8f0; margin:20px 0;">
             <p style="color:#6b7280; font-size:12px;">
@@ -148,7 +204,7 @@ exports.handler = async (event) => {
         </div>
       `,
       attachments: base64Data
-        ? [{ filename: `cotizacion-envexa-${customer.name.replace(/\s+/g, "-").toLowerCase()}.pdf`, content: base64Data }]
+        ? [{ filename: `cotizacion-envexa-${customer.name.replace(/\s+/g, "-").toLowerCase()}.pdf`, content: Buffer.from(base64Data, "base64") }]
         : [],
     });
 

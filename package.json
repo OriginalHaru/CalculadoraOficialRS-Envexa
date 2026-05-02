@@ -4,6 +4,6 @@
   "private": true,
   "dependencies": {
     "@notionhq/client": "^2.2.15",
-    "resend": "^3.2.0"
+    "nodemailer": "^6.9.14"
   }
 }

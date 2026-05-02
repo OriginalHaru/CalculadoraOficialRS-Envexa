@@ -48,6 +48,10 @@
     .dark .summary-table tr.section-header td { color: #4ade80; }
     .alert-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #92400e; margin-bottom: 0.4rem; }
     .dark .alert-warning { background: rgba(251,191,36,0.07); border-color: #b45309; color: #fcd34d; }
+    .alert-error { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #991b1b; margin-bottom: 0.4rem; }
+    .dark .alert-error { background: rgba(239,68,68,0.08); border-color: #dc2626; color: #fca5a5; }
+    .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #1e40af; margin-bottom: 0.4rem; }
+    .dark .alert-info { background: rgba(59,130,246,0.07); border-color: #3b82f6; color: #93c5fd; }
     label.field-label { display: block; font-size: 0.78rem; font-weight: 500; margin-bottom: 0.25rem; color: #374151; }
     .dark label.field-label { color: #9ca3af; }
     .toggle-btn { border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.45rem 1.2rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; background: transparent; color: #6b7280; }
@@ -104,6 +108,12 @@
       <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
         <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">1</span>
         Datos del solicitante
+        <span class="relative ml-auto group cursor-pointer" style="z-index:10">
+          <span class="text-blue-400 hover:text-blue-600 text-base select-none">ℹ️</span>
+          <span class="absolute right-0 top-6 w-72 bg-gray-800 text-white text-xs rounded-lg p-3 shadow-xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150" style="z-index:20">
+            Los datos que se dejen en esta sección son con los cuales se van a declarar el envío, así que cargue dichos datos con conciencia.
+          </span>
+        </span>
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -219,6 +229,13 @@
       <p id="fileError" class="hidden mt-2 text-xs text-red-500"></p>
     </section>
 
+    <!-- SECTION: PESO TOTAL INFO (siempre visible cuando hay cajas) -->
+    <div id="weightInfoSection" class="hidden">
+      <div id="weightInfoAlert" class="alert-info">
+        <span>📦</span><span id="weightInfoText"></span>
+      </div>
+    </div>
+
     <!-- SECTION: COMPLIANCE ALERTS -->
     <div id="complianceSection" class="hidden">
       <div class="flex items-center gap-2 mb-2">
@@ -276,6 +293,21 @@
       </ul>
       <p class="text-xs text-gray-500 dark:text-gray-400 italic">Si no estás seguro, seleccioná "Sí" y nuestro equipo te va a asesorar.</p>
       <button onclick="closeInfoModal()" class="mt-4 btn-primary">Entendido</button>
+    </div>
+  </div>
+
+  <!-- MODAL: ÉXITO POST-ENVÍO -->
+  <div id="modalSuccess" class="modal-backdrop hidden" onclick="if(event.target===this)closeSuccessModal()">
+    <div class="modal-content text-center">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3 class="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">¡Solicitud enviada!</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">
+        Tu solicitud se envió correctamente. En las próximas 24 horas hábiles vamos a estar confirmándote tu cotización y dándote los pasos a seguir.
+      </p>
+      <a href="https://mail.google.com" target="_blank" class="btn-primary inline-block mb-3 w-full">Ir a mi Gmail</a>
+      <button onclick="closeSuccessModal()" class="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-full">Cerrar</button>
     </div>
   </div>
 
@@ -348,7 +380,7 @@ function addBox() {
   div.id = 'box-' + id;
   div.innerHTML = `
     <div class="flex items-center justify-between mb-3">
-      <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Caja #${id}</span>
+      <span class="box-title-label font-semibold text-sm text-gray-700 dark:text-gray-300">Caja #${id}</span>
       <button onclick="removeBox(${id})" class="btn-danger">× Eliminar</button>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
@@ -386,12 +418,22 @@ function addBox() {
     </div>`;
   document.getElementById('boxList').appendChild(div);
   addProduct(id);
+  renumberBoxes();
+}
+
+function renumberBoxes() {
+  const boxes = document.querySelectorAll('#boxList .box-card');
+  boxes.forEach((card, i) => {
+    const span = card.querySelector('.box-title-label');
+    if (span) span.textContent = `Caja #${i + 1}`;
+  });
 }
 
 function removeBox(id) {
   const el = document.getElementById('box-' + id);
   if (el) el.remove();
   delete prodCounters[id];
+  renumberBoxes();
   recalc();
 }
 
@@ -491,15 +533,20 @@ function calcTotals(boxes) {
 function checkCompliance(boxes, t) {
   const w = [];
   boxes.forEach(b => {
-    if (!b.products.length) w.push(`La caja #${b.id} no tiene productos.`);
+    if (!b.products.length) w.push(`⚠️ La caja #${b.id} no tiene productos.`);
     b.products.forEach(p => {
-      if (p.fob > 200) w.push(`"${p.name || 'Producto'}" (caja #${b.id}) supera USD 200 unitario. Puede requerir análisis.`);
+      if (p.fob > 200) w.push(`⚠️ "${p.name || 'Producto'}" (caja #${b.id}) supera USD 200 unitario. Puede requerir análisis.`);
       if (p.hs && RESTRICTED_HS.some(x => p.hs.replace(/\D/g,'').startsWith(x)))
-        w.push(`HS ${p.hs} (caja #${b.id}) pertenece a una categoría de revisión especial.`);
+        w.push(`⚠️ HS ${p.hs} (caja #${b.id}) pertenece a una categoría de revisión especial.`);
     });
+    const nombreCaja = b.label || `Caja #${b.id}`;
+    if (b.pCob > 50) {
+      w.push(`🚫 El bulto ${nombreCaja} supera los 50 kg. No es posible enviarlo por régimen simplificado aéreo. Contactanos para evaluar alternativas.`);
+    } else if (b.pCob > 23) {
+      w.push(`⚠️ El bulto ${nombreCaja} supera los 23 kg y no cumple con los requerimientos del envío express. No hay problema porque no pasa los 50 kg, pero se le va a sumar un extra por superar los 23 kg.`);
+    }
   });
-  if (t.fob > 1000)    w.push(`El valor FOB total supera USD 1.000. Puede requerir gestión adicional.`);
-  if (t.pesoReal > 150) w.push(`El peso total supera 150 kg. Podría requerir despacho por régimen general.`);
+  if (t.fob > 3000) w.push(`⚠️ El valor FOB total supera los USD 3.000 del límite de Régimen Simplificado. Es probable que tengamos que dividir la carga en más de 1 envío.`);
   return w;
 }
 
@@ -518,7 +565,18 @@ function renderCompliance(warnings) {
   const sec = document.getElementById('complianceSection');
   const cont = document.getElementById('complianceAlerts');
   sec.classList.toggle('hidden', !warnings.length);
-  cont.innerHTML = warnings.map(w => `<div class="alert-warning"><span>⚠️</span><span>${w}</span></div>`).join('');
+  cont.innerHTML = warnings.map(w => {
+    const cls = w.startsWith('🚫') ? 'alert-error' : 'alert-warning';
+    return `<div class="${cls}"><span>${w}</span></div>`;
+  }).join('');
+}
+
+function renderWeightInfo(t, boxes) {
+  const sec = document.getElementById('weightInfoSection');
+  const txt = document.getElementById('weightInfoText');
+  if (!boxes.length || !t.pesoCob) { sec.classList.add('hidden'); return; }
+  sec.classList.remove('hidden');
+  txt.textContent = `La carga pesa un total de ${fmt(t.pesoCob)} kg cobrables. Asegurate de que ninguno de los bultos supere los 23 kg para aprovechar el envío express.`;
 }
 
 function renderSummary(t, boxes) {
@@ -559,8 +617,8 @@ function renderSummary(t, boxes) {
       ${row('Tasa estadística (3%)', t.tasa)}
       ${row('IVA (21%)', t.iva)}
       ${head('Costos operativos')}
-      ${row('Gastos documentales', t.gastosDoc)}
-      ${row('Gastos de destino', t.gastosDest)}
+      ${row('Gastos Despacho Exportación 🇨🇳', t.gastosDoc)}
+      ${row('Gastos Despacho Importación 🇦🇷', t.gastosDest)}
       ${row('Gestión ENVEXA', t.gestion)}
       ${row('Comisión bancaria (2% s/flete)', t.comisionBancaria)}
       <tr class="total-row">
@@ -581,6 +639,7 @@ function recalc() {
   const warnings = checkCompliance(boxes, t);
   renderBoxSummaries(boxes);
   renderCompliance(warnings);
+  renderWeightInfo(t, boxes);
   renderSummary(t, boxes);
   // enable submit button if minimal data present
   const canSend = boxes.length > 0 && boxes.every(b => b.products.length > 0) && !!selectedCourier;
@@ -667,8 +726,8 @@ function generatePdf(cust, t, boxes, courier) {
     ['Derechos importación (35%)',                              t.d],
     ['Tasa estadística (3%)',                                   t.tasa],
     ['IVA (21%)',                                               t.iva],
-    ['Gastos documentales',                                     t.gastosDoc],
-    ['Gastos de destino',                                       t.gastosDest],
+    ['Gastos Despacho Exportacion CN',                          t.gastosDoc],
+    ['Gastos Despacho Importacion AR',                         t.gastosDest],
     ['Gestión ENVEXA',                                          t.gestion],
     ['Comisión bancaria (2% s/flete)',                          t.comisionBancaria],
   ];
@@ -726,7 +785,7 @@ async function submitRequest() {
     })),
     totals: {
       boxes_count: boxes.length, weight_real_kg: t.pesoReal, weight_chargeable_kg: t.pesoCob,
-      fob_total_usd: t.fob, freight_usd: t.flete, freight_rate_per_kg: t.pricePerKg,
+      fob_total_usd: t.fob, freight_usd: t.flete, freight_rate_per_kg: t.pricePerKg, price_per_kg: t.pricePerKg,
       insurance_usd: t.seguro, documental_costs_usd: t.gastosDoc, destination_costs_usd: t.gastosDest,
       envexa_fee_usd: t.gestion, banking_fee_usd: t.comisionBancaria,
       duties_usd: t.d, tasa_est_usd: t.tasa, iva_usd: t.iva,
@@ -746,8 +805,9 @@ async function submitRequest() {
     });
     const data = JSON.parse(await resp.text() || '{}');
     if (resp.ok && data.ok) {
-      showMsg(`✅ Solicitud enviada. Te enviamos el estimado a ${cust.email}. Un asesor te contactará pronto.`, 'success');
+      showMsg(`✅ Solicitud enviada. Te enviamos el estimado a ${cust.email}.`, 'success');
       btn.textContent = 'Solicitud enviada ✓';
+      openSuccessModal();
     } else {
       throw new Error(data.error || `HTTP ${resp.status}`);
     }
@@ -785,6 +845,14 @@ function openInfoModal() {
 
 function closeInfoModal() {
   document.getElementById('modalCanal').classList.add('hidden');
+}
+
+function openSuccessModal() {
+  document.getElementById('modalSuccess').classList.remove('hidden');
+}
+
+function closeSuccessModal() {
+  document.getElementById('modalSuccess').classList.add('hidden');
 }
 
 // ── File Attachments ──────────────────────────────────────────────────────────
