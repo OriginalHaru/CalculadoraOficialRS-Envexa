@@ -390,7 +390,10 @@ function addBox() {
   div.innerHTML = `
     <div class="flex items-center justify-between mb-3">
       <span class="box-title-label font-semibold text-sm text-gray-700 dark:text-gray-300">Caja #${id}</span>
-      <button onclick="removeBox(${id})" class="btn-danger">× Eliminar</button>
+      <div class="flex gap-2">
+        <button onclick="duplicateBox(${id})" class="btn-secondary">⧉ Duplicar</button>
+        <button onclick="removeBox(${id})" class="btn-danger">× Eliminar</button>
+      </div>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
       <div class="sm:col-span-4">
@@ -443,6 +446,56 @@ function removeBox(id) {
   if (el) el.remove();
   delete prodCounters[id];
   renumberBoxes();
+  recalc();
+}
+
+function duplicateBox(id) {
+  const srcLabel = vs(`bn-${id}`);
+  const srcL  = document.getElementById(`bL-${id}`)?.value  || '';
+  const srcW  = document.getElementById(`bW-${id}`)?.value  || '';
+  const srcH  = document.getElementById(`bH-${id}`)?.value  || '';
+  const srcKg = document.getElementById(`bW2-${id}`)?.value || '';
+
+  const srcProducts = [];
+  document.querySelectorAll(`#pl-${id} .product-row`).forEach(row => {
+    const rid = row.id.split('-')[2];
+    srcProducts.push({
+      name: vs(`pn-${id}-${rid}`),
+      qty:  document.getElementById(`pq-${id}-${rid}`)?.value || '1',
+      pw:   document.getElementById(`pw-${id}-${rid}`)?.value || '',
+      fob:  document.getElementById(`pf-${id}-${rid}`)?.value || '',
+      hs:   vs(`ph-${id}-${rid}`),
+    });
+  });
+
+  addBox();
+  const newId = boxCounter;
+
+  document.getElementById(`bn-${newId}`).value  = srcLabel;
+  document.getElementById(`bL-${newId}`).value  = srcL;
+  document.getElementById(`bW-${newId}`).value  = srcW;
+  document.getElementById(`bH-${newId}`).value  = srcH;
+  document.getElementById(`bW2-${newId}`).value = srcKg;
+
+  if (srcProducts.length > 0) {
+    const pid1 = prodCounters[newId];
+    document.getElementById(`pn-${newId}-${pid1}`).value = srcProducts[0].name;
+    document.getElementById(`pq-${newId}-${pid1}`).value = srcProducts[0].qty;
+    document.getElementById(`pw-${newId}-${pid1}`).value = srcProducts[0].pw;
+    document.getElementById(`pf-${newId}-${pid1}`).value = srcProducts[0].fob;
+    document.getElementById(`ph-${newId}-${pid1}`).value = srcProducts[0].hs;
+
+    for (let i = 1; i < srcProducts.length; i++) {
+      addProduct(newId);
+      const pid = prodCounters[newId];
+      document.getElementById(`pn-${newId}-${pid}`).value = srcProducts[i].name;
+      document.getElementById(`pq-${newId}-${pid}`).value = srcProducts[i].qty;
+      document.getElementById(`pw-${newId}-${pid}`).value = srcProducts[i].pw;
+      document.getElementById(`pf-${newId}-${pid}`).value = srcProducts[i].fob;
+      document.getElementById(`ph-${newId}-${pid}`).value = srcProducts[i].hs;
+    }
+  }
+
   recalc();
 }
 
