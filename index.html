@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ENVEXA · Calculadora Oficial de Courier</title>
+  <script>if(localStorage.getItem('envexa-dark')==='1')document.documentElement.classList.add('dark');</script>
+  <link rel="icon" type="image/webp" href="data:image/webp;base64,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">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' };</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body { transition: background-color 0.2s, color 0.2s; }
+    .input-field {
+      width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db;
+      border-radius: 0.5rem; font-size: 0.875rem; background: white; color: #111827;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .input-field.error { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important; }
+    .dark .input-field { background: #0f172a; border-color: #374151; color: #f3f4f6; }
+    .dark .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .dark .card { background: #0b1220; border-color: #1f2937; }
+    .courier-card { border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .dark .courier-card { border-color: #374151; }
+    .courier-card.selected { border-color: #10b981; background: #f0fdf4; }
+    .dark .courier-card.selected { border-color: #10b981; background: rgba(16,185,129,0.08); }
+    .box-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
+    .dark .box-card { background: #0f172a; border-color: #1f2937; }
+    .product-row { display: grid; grid-template-columns: 2fr 0.6fr 0.9fr 0.9fr 1fr auto; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem; }
+    @media (max-width: 640px) { .product-row { grid-template-columns: 1fr 1fr; } }
+    .btn-primary { background: #10b981; color: white; padding: 0.75rem 2rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: background 0.15s, transform 0.1s; width: 100%; }
+    .btn-primary:hover:not(:disabled) { background: #059669; }
+    .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; }
+    .btn-secondary { background: transparent; color: #10b981; border: 1px solid #10b981; padding: 0.4rem 0.9rem; border-radius: 0.5rem; font-size: 0.8rem; cursor: pointer; transition: background 0.15s; }
+    .btn-secondary:hover { background: #f0fdf4; }
+    .dark .btn-secondary:hover { background: rgba(16,185,129,0.1); }
+    .btn-danger { background: transparent; color: #ef4444; border: 1px solid #fca5a5; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer; transition: background 0.15s; }
+    .btn-danger:hover { background: #fef2f2; }
+    .dark .btn-danger { border-color: #7f1d1d; }
+    .dark .btn-danger:hover { background: rgba(239,68,68,0.1); }
+    .summary-table { width: 100%; border-collapse: collapse; }
+    .summary-table td { padding: 0.4rem 0.4rem; font-size: 0.875rem; }
+    .summary-table tr.section-header td { font-weight: 600; color: #22c55e; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.85rem; }
+    .summary-table tr.total-row td { font-weight: 700; font-size: 1rem; color: #10b981; border-top: 2px solid #10b981; padding-top: 0.5rem; }
+    .dark .summary-table tr.section-header td { color: #4ade80; }
+    .alert-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #92400e; margin-bottom: 0.4rem; }
+    .dark .alert-warning { background: rgba(251,191,36,0.07); border-color: #b45309; color: #fcd34d; }
+    label.field-label { display: block; font-size: 0.78rem; font-weight: 500; margin-bottom: 0.25rem; color: #374151; }
+    .dark label.field-label { color: #9ca3af; }
+    .toggle-btn { border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.45rem 1.2rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; background: transparent; color: #6b7280; }
+    .toggle-btn.active { border-color: #10b981; background: #f0fdf4; color: #059669; font-weight: 600; }
+    .dark .toggle-btn { border-color: #374151; color: #9ca3af; }
+    .dark .toggle-btn.active { border-color: #10b981; background: rgba(16,185,129,0.1); color: #34d399; }
+    .info-btn { width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 1.5px solid #9ca3af; color: #9ca3af; font-size: 0.72rem; font-weight: 700; cursor: pointer; background: transparent; display: inline-flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.15s; flex-shrink: 0; }
+    .info-btn:hover { border-color: #10b981; color: #10b981; }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-content { background: white; border-radius: 1rem; padding: 1.5rem; max-width: 28rem; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .dark .modal-content { background: #0b1220; border: 1px solid #1f2937; }
+    .dropzone { border: 2px dashed #d1d5db; border-radius: 0.75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .dropzone:hover, .dropzone.drag-over { border-color: #10b981; background: #f0fdf4; }
+    .dark .dropzone { border-color: #374151; }
+    .dark .dropzone:hover, .dark .dropzone.drag-over { background: rgba(16,185,129,0.05); border-color: #10b981; }
+    .file-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; font-size: 0.8rem; margin-bottom: 0.3rem; }
+    .dark .file-item { background: #0f172a; border-color: #1f2937; }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+
+  <!-- HEADER -->
+  <header class="bg-[#0b1220] text-white px-5 py-3.5 flex items-center justify-between shadow-lg sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <img src="data:image/webp;base64,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"
+        alt="ENVEXA" class="h-9 w-9 object-contain rounded">
+      <div>
+        <div class="font-bold text-base leading-tight">ENVEXA</div>
+        <div class="text-xs text-gray-400">Calculadora Oficial de Courier - Aereo</div>
+      </div>
+    </div>
+    <button id="btnDark" onclick="toggleDark()" title="Alternar modo oscuro"
+      class="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors text-lg leading-none">🌙</button>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-7 space-y-5">
+
+    <!-- INTRO -->
+    <div class="card p-5">
+      <div class="flex gap-3 items-start">
+        <div class="text-2xl mt-0.5 flex-shrink-0">📦</div>
+        <div>
+          <h1 class="text-lg font-bold">Calculadora Oficial de Courier</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Completá los campos para recibir un estimado de costos y envia tu solicitud si los costos te sirven. Tené en cuenta que el precio final puede variar según el courier y las condiciones del envío, pero esta calculadora te dará una buena referencia para planificar tu logística.
+          </p>
+          <div id="rateInfo" class="mt-2 text-xs text-gray-400 dark:text-gray-500"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: CUSTOMER DATA -->
+    <section class="card p-5">
+      <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">1</span>
+        Datos del solicitante
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label" for="custName">Nombre completo <span class="text-red-500">*</span></label>
+          <input class="input-field" id="custName" type="text" placeholder="Ej: María García" oninput="recalc()">
+        </div>
+        <div>
+          <label class="field-label" for="custEmail">Email <span class="text-red-500">*</span></label>
+          <input class="input-field" id="custEmail" type="email" placeholder="correo@ejemplo.com" oninput="recalc()">
+        </div>
+        <div>
+          <label class="field-label" for="custPhone">Teléfono <span class="text-red-500">*</span></label>
+          <input class="input-field" id="custPhone" type="tel" placeholder="+54 11 1234-5678" oninput="recalc()">
+        </div>
+        <div>
+          <label class="field-label" for="custCuit">CUIT / CUIL <span class="text-red-500">*</span></label>
+          <input class="input-field" id="custCuit" type="text" placeholder="20-12345678-9" oninput="recalc()">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="field-label" for="custAddress">Dirección de entrega <span class="text-red-500">*</span></label>
+          <input class="input-field" id="custAddress" type="text" placeholder="Calle, número, ciudad, provincia" oninput="recalc()">
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COURIER -->
+    <section class="card p-5">
+      <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">2</span>
+        Courier de preferencia
+      </h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="courier-card" id="cardDHL" onclick="selectCourier('DHL')">
+          <div class="flex items-center gap-3">
+            <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-500 flex items-center justify-center flex-shrink-0" id="radioDHL">
+              <div class="w-2 h-2 rounded-full bg-emerald-500 hidden" id="dotDHL"></div>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">DHL Express</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">Entrega rápida y confiable</div>
+            </div>
+          </div>
+        </div>
+        <div class="courier-card" id="cardFedEx" onclick="selectCourier('FedEx')">
+          <div class="flex items-center gap-3">
+            <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-500 flex items-center justify-center flex-shrink-0" id="radioFedEx">
+              <div class="w-2 h-2 rounded-full bg-emerald-500 hidden" id="dotFedEx"></div>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">FedEx International</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">Cobertura global premium</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p id="courierError" class="text-xs text-red-500 mt-2 hidden">Seleccioná un courier para continuar.</p>
+    </section>
+
+    <!-- SECTION 3: BOXES -->
+    <section class="card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base font-semibold flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">3</span>
+          Cajas y productos
+        </h2>
+        <button onclick="addBox()" class="btn-secondary">+ Agregar caja</button>
+      </div>
+      <div id="boxList"></div>
+      <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+        El peso facturable es el mayor entre el peso real y el volumétrico (L × A × H ÷ 6000).
+      </p>
+    </section>
+
+    <!-- SECTION 4: CANAL ESPECIAL -->
+    <section class="card p-5">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+          <h2 class="text-base font-semibold flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">4</span>
+            ¿Tus productos requieren canal especial?
+          </h2>
+          <button class="info-btn" onclick="openInfoModal()" title="¿Qué es esto?">?</button>
+        </div>
+        <div class="flex gap-2">
+          <button id="btnCanalNo" class="toggle-btn active" onclick="setCanalEspecial(false)">No</button>
+          <button id="btnCanalSi" class="toggle-btn" onclick="setCanalEspecial(true)">Sí</button>
+        </div>
+      </div>
+      <div id="canalEspecialNote" class="hidden mt-3 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-2 border border-amber-200 dark:border-amber-800">
+        ⚠️ Indicaste que los productos requieren canal especial. Nuestro equipo lo tendrá en cuenta al revisar la solicitud.
+      </div>
+    </section>
+
+    <!-- SECTION 5: ARCHIVOS ADJUNTOS -->
+    <section class="card p-5">
+      <h2 class="text-base font-semibold mb-1 flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">5</span>
+        Adjuntá tu Factura Proforma y Packing List
+        <span class="text-xs font-normal text-gray-400 dark:text-gray-500">(opcional)</span>
+      </h2>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">PDF, JPG, PNG, XLSX, DOC · Máx 5 archivos · 10 MB c/u</p>
+      <div class="dropzone" id="dropzone"
+        onclick="document.getElementById('fileInput').click()"
+        ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)"
+        ondrop="handleDrop(event)">
+        <div class="text-3xl mb-2">📎</div>
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Arrastrá archivos acá o hacé clic para seleccionar</div>
+        <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">Hasta 5 archivos</div>
+      </div>
+      <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls,.doc,.docx" class="hidden" onchange="handleFileInput(event)">
+      <div id="fileList" class="mt-3"></div>
+      <p id="fileError" class="hidden mt-2 text-xs text-red-500"></p>
+    </section>
+
+    <!-- SECTION: COMPLIANCE ALERTS -->
+    <div id="complianceSection" class="hidden">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-yellow-500 text-base">⚠️</span>
+        <span class="text-sm font-semibold text-yellow-700 dark:text-yellow-400">Alertas de cumplimiento</span>
+      </div>
+      <div id="complianceAlerts"></div>
+    </div>
+
+    <!-- SECTION 5: COST SUMMARY -->
+    <section id="summarySection" class="card p-5 hidden">
+      <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">6</span>
+        Estimado de costos
+      </h2>
+      <div id="summaryContent"></div>
+      <p class="text-xs text-gray-400 dark:text-gray-500 mt-4 italic">
+        * Los valores son estimativos. El costo final puede variar según el tipo de cambio oficial vigente al momento del despacho y la verificación de la mercadería.
+      </p>
+    </section>
+
+    <!-- SECTION 6: SUBMIT -->
+    <div class="card p-5">
+      <div id="sendMsg" class="mb-3 text-sm hidden"></div>
+      <button id="btnSend" onclick="submitRequest()" class="btn-primary" disabled>
+        Enviar solicitud de cotización
+      </button>
+      <p class="text-xs text-gray-400 dark:text-gray-500 text-center mt-3">
+        Al enviar, recibirás un estimado por email. Un asesor de ENVEXA se contactará para confirmar los detalles.
+      </p>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-8 text-xs text-gray-400 dark:text-gray-600">
+    <div>ENVEXA · Soluciones en Comercio Exterior · Argentina</div>
+    <div class="mt-1">Los estimados no constituyen una oferta comercial formal. Sujeto a verificación de documentación.</div>
+  </footer>
+
+  <!-- MODAL: INFO CANAL ESPECIAL -->
+  <div id="modalCanal" class="modal-backdrop hidden" onclick="if(event.target===this)closeInfoModal()">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">¿Qué productos requieren canal especial?</h3>
+        <button onclick="closeInfoModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl leading-none">&times;</button>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Algunos productos requieren documentación adicional y salen por un canal especial de Aduana. Ejemplos comunes:</p>
+      <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 list-disc list-inside mb-3">
+        <li>Alimentos y suplementos dietarios</li>
+        <li>Cosméticos y productos de higiene personal</li>
+        <li>Productos médicos o farmacéuticos</li>
+        <li>Juguetes</li>
+        <li>Electrónica con certificación obligatoria</li>
+        <li>Productos textiles con requisitos de etiquetado</li>
+      </ul>
+      <p class="text-xs text-gray-500 dark:text-gray-400 italic">Si no estás seguro, seleccioná "Sí" y nuestro equipo te va a asesorar.</p>
+      <button onclick="closeInfoModal()" class="mt-4 btn-primary">Entendido</button>
+    </div>
+  </div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let exchangeRate = 1200;
+let selectedCourier = null;
+let boxCounter = 0;
+const prodCounters = {};
+let canalEspecial = false;
+let attachments = [];
+
+const RESTRICTED_HS = ['8471','8517','8542','9013','9014','8543','8803','8802','8525','8528'];
+const FREIGHT_TIERS = [
+  { max_kg: 100,      price_per_kg: 15 },
+  { max_kg: 200,      price_per_kg: 14 },
+  { max_kg: Infinity, price_per_kg: 13 },
+];
+const ENVEXA_FEE_USD = 150;
+const DOCUMENTAL_FEE = 29;
+
+// ── Dark Mode ─────────────────────────────────────────────────────────────────
+function toggleDark() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('envexa-dark', isDark ? '1' : '0');
+  document.getElementById('btnDark').textContent = isDark ? '☀️' : '🌙';
+}
+(function() {
+  document.getElementById('btnDark').textContent =
+    document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+})();
+
+// ── Exchange Rate ─────────────────────────────────────────────────────────────
+async function fetchExchangeRate() {
+  try {
+    const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
+    if (!res.ok) throw 0;
+    const data = await res.json();
+    exchangeRate = parseFloat(data.venta) || 1200;
+    document.getElementById('rateInfo').textContent =
+      `Tipo de cambio oficial: $${fmt(exchangeRate)} ARS/USD (dolarapi.com)`;
+  } catch {
+    document.getElementById('rateInfo').textContent =
+      'Tipo de cambio: $1.200,00 ARS/USD (valor de referencia)';
+  }
+  recalc();
+}
+
+// ── Courier ───────────────────────────────────────────────────────────────────
+function selectCourier(name) {
+  selectedCourier = name;
+  ['DHL','FedEx'].forEach(c => {
+    const selected = c === name;
+    document.getElementById('card' + c).classList.toggle('selected', selected);
+    document.getElementById('dot'  + c).classList.toggle('hidden', !selected);
+    const ring = document.getElementById('radio' + c);
+    ring.style.borderColor = selected ? '#10b981' : '';
+  });
+  document.getElementById('courierError').classList.add('hidden');
+  recalc();
+}
+
+// ── Box Management ────────────────────────────────────────────────────────────
+function addBox() {
+  boxCounter++;
+  const id = boxCounter;
+  prodCounters[id] = 0;
+  const div = document.createElement('div');
+  div.className = 'box-card';
+  div.id = 'box-' + id;
+  div.innerHTML = `
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">Caja #${id}</span>
+      <button onclick="removeBox(${id})" class="btn-danger">× Eliminar</button>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+      <div class="sm:col-span-4">
+        <label class="field-label">Descripción (opcional)</label>
+        <input class="input-field" id="bn-${id}" type="text" placeholder="Ej: Electrónicos" oninput="recalc()">
+      </div>
+      <div>
+        <label class="field-label">Largo cm <span class="text-red-400">*</span></label>
+        <input class="input-field" id="bL-${id}" type="number" min="0" step="0.1" placeholder="0" oninput="recalc()">
+      </div>
+      <div>
+        <label class="field-label">Ancho cm <span class="text-red-400">*</span></label>
+        <input class="input-field" id="bW-${id}" type="number" min="0" step="0.1" placeholder="0" oninput="recalc()">
+      </div>
+      <div>
+        <label class="field-label">Alto cm <span class="text-red-400">*</span></label>
+        <input class="input-field" id="bH-${id}" type="number" min="0" step="0.1" placeholder="0" oninput="recalc()">
+      </div>
+      <div>
+        <label class="field-label">Peso kg <span class="text-red-400">*</span></label>
+        <input class="input-field" id="bW2-${id}" type="number" min="0" step="0.01" placeholder="0.00" oninput="recalc()">
+      </div>
+    </div>
+    <div class="text-xs text-emerald-600 dark:text-emerald-400 mb-3 font-medium" id="bsumm-${id}"></div>
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Productos</span>
+        <button onclick="addProduct(${id})" class="btn-secondary">+ Producto</button>
+      </div>
+      <div class="hidden sm:grid text-xs text-gray-400 mb-1 px-1" style="grid-template-columns:2fr 0.6fr 0.9fr 0.9fr 1fr auto; gap:0.4rem;">
+        <span>Descripción</span><span>Cant.</span><span>Peso/u kg</span><span>FOB/u USD</span><span>HS (opc.)</span><span></span>
+      </div>
+      <div id="pl-${id}"></div>
+    </div>`;
+  document.getElementById('boxList').appendChild(div);
+  addProduct(id);
+}
+
+function removeBox(id) {
+  const el = document.getElementById('box-' + id);
+  if (el) el.remove();
+  delete prodCounters[id];
+  recalc();
+}
+
+function addProduct(boxId) {
+  prodCounters[boxId] = (prodCounters[boxId] || 0) + 1;
+  const pid = prodCounters[boxId];
+  const row = document.createElement('div');
+  row.className = 'product-row';
+  row.id = `pr-${boxId}-${pid}`;
+  row.innerHTML = `
+    <input class="input-field" id="pn-${boxId}-${pid}" type="text" placeholder="Nombre del producto" oninput="recalc()">
+    <input class="input-field" id="pq-${boxId}-${pid}" type="number" min="1" step="1" value="1" oninput="recalc()">
+    <input class="input-field" id="pw-${boxId}-${pid}" type="number" min="0" step="0.001" placeholder="0.000" oninput="recalc()">
+    <input class="input-field" id="pf-${boxId}-${pid}" type="number" min="0" step="0.01" placeholder="0.00" oninput="recalc()">
+    <input class="input-field" id="ph-${boxId}-${pid}" type="text" placeholder="8471.30" oninput="recalc()">
+    <button onclick="removeProduct(${boxId},${pid})" class="btn-danger" title="Eliminar">×</button>`;
+  document.getElementById('pl-' + boxId).appendChild(row);
+  recalc();
+}
+
+function removeProduct(boxId, pid) {
+  const el = document.getElementById(`pr-${boxId}-${pid}`);
+  if (el) el.remove();
+  recalc();
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const vn = id => { const e = document.getElementById(id); return e ? parseFloat(e.value) || 0 : 0; };
+const vs = id => { const e = document.getElementById(id); return e ? (e.value || '').trim() : ''; };
+const fmt = n => n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fUSD = n => 'USD ' + fmt(n);
+const fARS = n => '$ ' + fmt(n);
+
+// ── Core Calculation ──────────────────────────────────────────────────────────
+function getBoxes() {
+  const boxes = [];
+  document.querySelectorAll('[id^="box-"]').forEach(el => {
+    if (!/^box-\d+$/.test(el.id)) return;
+    const id = parseInt(el.id.slice(4));
+    const L = vn(`bL-${id}`), W = vn(`bW-${id}`), H = vn(`bH-${id}`), kg = vn(`bW2-${id}`);
+    const pVol = (L * W * H) / 6000;
+    const pCob = Math.max(kg, pVol);
+    const products = [];
+    document.querySelectorAll(`#pl-${id} .product-row`).forEach(row => {
+      const rid = row.id.split('-')[2];
+      const name = vs(`pn-${id}-${rid}`);
+      const qty  = vn(`pq-${id}-${rid}`) || 1;
+      const pw   = vn(`pw-${id}-${rid}`);
+      const fob  = vn(`pf-${id}-${rid}`);
+      const hs   = vs(`ph-${id}-${rid}`);
+      products.push({ name, qty, pw, fob, fobTotal: qty * fob, hs });
+    });
+    const fobBox = products.reduce((a, p) => a + p.fobTotal, 0);
+    boxes.push({ id, L, W, H, kg, pVol, pCob, products, fobBox, label: vs(`bn-${id}`) });
+  });
+  return boxes;
+}
+
+function getFreightRate(pesoCob) {
+  for (const tier of FREIGHT_TIERS) {
+    if (pesoCob < tier.max_kg) return tier.price_per_kg;
+  }
+  return FREIGHT_TIERS[FREIGHT_TIERS.length - 1].price_per_kg;
+}
+
+function calcTotals(boxes) {
+  const pesoReal = boxes.reduce((a, b) => a + b.kg, 0);
+  const pesoCob  = boxes.reduce((a, b) => a + b.pCob, 0);
+  const fob      = boxes.reduce((a, b) => a + b.fobBox, 0);
+
+  const pricePerKg = getFreightRate(pesoCob);
+  const flete  = pesoCob * pricePerKg;
+  const seguro = 0.01 * fob;
+
+  const gastosDoc      = (pesoCob > 90 || fob > 700) ? DOCUMENTAL_FEE : 0;
+  const gastosDest     = 85;
+  const gestion        = ENVEXA_FEE_USD;
+  const comisionBancaria = flete * 0.02;
+
+  const cif  = fob + flete + seguro;
+  const d    = cif * 0.35;
+  const tasa = (cif + d) * 0.03;
+  const iva  = (cif + d + tasa) * 0.21;
+
+  const total = cif + d + tasa + iva + gastosDoc + gastosDest + gestion + comisionBancaria;
+
+  return {
+    pesoReal, pesoCob, fob,
+    pricePerKg, flete, seguro,
+    gastosDoc, gastosDest, gestion, comisionBancaria,
+    d, tasa, iva, total,
+    ars: total * exchangeRate,
+  };
+}
+
+// ── Compliance ────────────────────────────────────────────────────────────────
+function checkCompliance(boxes, t) {
+  const w = [];
+  boxes.forEach(b => {
+    if (!b.products.length) w.push(`La caja #${b.id} no tiene productos.`);
+    b.products.forEach(p => {
+      if (p.fob > 200) w.push(`"${p.name || 'Producto'}" (caja #${b.id}) supera USD 200 unitario. Puede requerir análisis.`);
+      if (p.hs && RESTRICTED_HS.some(x => p.hs.replace(/\D/g,'').startsWith(x)))
+        w.push(`HS ${p.hs} (caja #${b.id}) pertenece a una categoría de revisión especial.`);
+    });
+  });
+  if (t.fob > 1000)    w.push(`El valor FOB total supera USD 1.000. Puede requerir gestión adicional.`);
+  if (t.pesoReal > 150) w.push(`El peso total supera 150 kg. Podría requerir despacho por régimen general.`);
+  return w;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderBoxSummaries(boxes) {
+  boxes.forEach(b => {
+    const el = document.getElementById(`bsumm-${b.id}`);
+    if (!el) return;
+    el.textContent = (b.L && b.W && b.H && b.kg)
+      ? `Peso vol: ${fmt(b.pVol)} kg · Cobrable: ${fmt(b.pCob)} kg · FOB: USD ${fmt(b.fobBox)}`
+      : '';
+  });
+}
+
+function renderCompliance(warnings) {
+  const sec = document.getElementById('complianceSection');
+  const cont = document.getElementById('complianceAlerts');
+  sec.classList.toggle('hidden', !warnings.length);
+  cont.innerHTML = warnings.map(w => `<div class="alert-warning"><span>⚠️</span><span>${w}</span></div>`).join('');
+}
+
+function renderSummary(t, boxes) {
+  const sec = document.getElementById('summarySection');
+  const cont = document.getElementById('summaryContent');
+  if (!t.pesoCob && !t.fob) { sec.classList.add('hidden'); return; }
+  sec.classList.remove('hidden');
+
+  const row = (label, val) =>
+    `<tr><td class="text-gray-500 dark:text-gray-400 pr-4">${label}</td>
+      <td class="text-right text-gray-800 dark:text-gray-200 whitespace-nowrap">${fUSD(val)}</td></tr>`;
+  const head = label =>
+    `<tr class="section-header"><td colspan="2" class="pb-0">${label}</td></tr>`;
+
+  cont.innerHTML = `
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+        <div class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Cajas</div>
+        <div class="font-bold text-xl">${boxes.length}</div>
+      </div>
+      <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+        <div class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Peso real</div>
+        <div class="font-bold text-xl">${fmt(t.pesoReal)}<span class="text-sm font-normal"> kg</span></div>
+      </div>
+      <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+        <div class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Peso cobrable</div>
+        <div class="font-bold text-xl">${fmt(t.pesoCob)}<span class="text-sm font-normal"> kg</span></div>
+      </div>
+    </div>
+    <table class="summary-table">
+      ${head('Mercadería')}
+      ${row('FOB total', t.fob)}
+      ${head('Transporte y seguro')}
+      ${row(`Flete aéreo (${fmt(t.pesoCob)} kg × USD ${t.pricePerKg}/kg)`, t.flete)}
+      ${row('Seguro (1% del FOB)', t.seguro)}
+      ${head('Impuestos y tasas')}
+      ${row('Derechos de importación (DAI 35%)', t.d)}
+      ${row('Tasa estadística (3%)', t.tasa)}
+      ${row('IVA (21%)', t.iva)}
+      ${head('Costos operativos')}
+      ${row('Gastos documentales', t.gastosDoc)}
+      ${row('Gastos de destino', t.gastosDest)}
+      ${row('Gestión ENVEXA', t.gestion)}
+      ${row('Comisión bancaria (2% s/flete)', t.comisionBancaria)}
+      <tr class="total-row">
+        <td class="pr-4">TOTAL ESTIMADO</td>
+        <td class="text-right whitespace-nowrap">${fUSD(t.total)}</td>
+      </tr>
+    </table>
+    <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-sm flex-wrap gap-2">
+      <span class="text-gray-500 dark:text-gray-400">En pesos (TC $${fmt(exchangeRate)})</span>
+      <span class="font-semibold text-emerald-600 dark:text-emerald-400 text-base">${fARS(t.ars)}</span>
+    </div>`;
+}
+
+// ── Recalc ────────────────────────────────────────────────────────────────────
+function recalc() {
+  const boxes = getBoxes();
+  const t = calcTotals(boxes);
+  const warnings = checkCompliance(boxes, t);
+  renderBoxSummaries(boxes);
+  renderCompliance(warnings);
+  renderSummary(t, boxes);
+  // enable submit button if minimal data present
+  const canSend = boxes.length > 0 && boxes.every(b => b.products.length > 0) && !!selectedCourier;
+  document.getElementById('btnSend').disabled = !canSend;
+}
+
+// ── Validation ────────────────────────────────────────────────────────────────
+function validateForm() {
+  let ok = true;
+  ['custName','custEmail','custPhone','custCuit','custAddress'].forEach(id => {
+    const el = document.getElementById(id);
+    const empty = !el.value.trim();
+    el.classList.toggle('error', empty);
+    if (empty) ok = false;
+  });
+  if (!selectedCourier) {
+    document.getElementById('courierError').classList.remove('hidden');
+    ok = false;
+  }
+  const boxes = getBoxes();
+  if (!boxes.length) { ok = false; }
+  boxes.forEach(b => {
+    ['bL','bW','bH','bW2'].forEach(pfx => {
+      const el = document.getElementById(`${pfx}-${b.id}`);
+      if (!el) return;
+      const bad = !el.value || parseFloat(el.value) <= 0;
+      el.classList.toggle('error', bad);
+      if (bad) ok = false;
+    });
+    if (!b.products.length) ok = false;
+    b.products.forEach(p => {
+      if (!p.name || p.qty <= 0 || p.pw <= 0 || p.fob <= 0) ok = false;
+    });
+  });
+  return ok;
+}
+
+// ── PDF ───────────────────────────────────────────────────────────────────────
+function generatePdf(cust, t, boxes, courier) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pw = doc.internal.pageSize.getWidth();
+  let y = 0;
+
+  doc.setFillColor(11, 18, 32);
+  doc.rect(0, 0, pw, 28, 'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold'); doc.setFontSize(15);
+  doc.text('ENVEXA', 15, 12);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+  doc.text('Estimado de Importación · Régimen Simplificado · Aéreo China→Argentina', 15, 20);
+  y = 36;
+
+  doc.setTextColor(40,40,40); doc.setFontSize(8.5);
+  doc.setFont('helvetica','bold'); doc.text('SOLICITANTE', 15, y); y += 5;
+  doc.setFont('helvetica','normal');
+  doc.text(`Nombre: ${cust.name}   Email: ${cust.email}   Tel: ${cust.phone}`, 15, y); y += 5;
+  doc.text(`CUIT: ${cust.cuit}   Dirección: ${cust.address}`, 15, y); y += 5;
+  doc.text(`Courier: ${courier}   Fecha: ${new Date().toLocaleDateString('es-AR')}`, 15, y); y += 8;
+
+  doc.setDrawColor(220,220,220); doc.line(15, y, pw-15, y); y += 5;
+  doc.setFont('helvetica','bold'); doc.text('DETALLE DE CAJAS', 15, y); y += 5; doc.setFont('helvetica','normal');
+  boxes.forEach(b => {
+    const lbl = b.label ? ` — ${b.label}` : '';
+    doc.setFont('helvetica','bold');
+    doc.text(`Caja #${b.id}${lbl}  |  ${b.L}×${b.W}×${b.H} cm  |  ${b.kg} kg real  |  ${fmt(b.pCob)} kg cobrable`, 15, y);
+    doc.setFont('helvetica','normal'); y += 5;
+    b.products.forEach(p => {
+      const ln = `  · ${p.name}  Cant: ${p.qty}  Peso/u: ${p.pw} kg  FOB/u: USD ${fmt(p.fob)}  Total FOB: USD ${fmt(p.fobTotal)}${p.hs ? '  HS: '+p.hs : ''}`;
+      const lines = doc.splitTextToSize(ln, pw-30);
+      doc.text(lines, 15, y); y += lines.length * 4.5;
+    });
+    y += 2;
+    if (y > 255) { doc.addPage(); y = 18; }
+  });
+
+  doc.setDrawColor(220,220,220); doc.line(15, y, pw-15, y); y += 6;
+  doc.setFont('helvetica','bold'); doc.text('ESTIMADO DE COSTOS', 15, y); y += 5; doc.setFont('helvetica','normal');
+
+  const costRows = [
+    [`FOB total (mercadería)`,                                  t.fob],
+    [`Flete aéreo (${fmt(t.pesoCob)} kg × USD ${t.pricePerKg}/kg)`, t.flete],
+    ['Seguro (1% FOB)',                                         t.seguro],
+    ['Derechos importación (35%)',                              t.d],
+    ['Tasa estadística (3%)',                                   t.tasa],
+    ['IVA (21%)',                                               t.iva],
+    ['Gastos documentales',                                     t.gastosDoc],
+    ['Gastos de destino',                                       t.gastosDest],
+    ['Gestión ENVEXA',                                          t.gestion],
+    ['Comisión bancaria (2% s/flete)',                          t.comisionBancaria],
+  ];
+  costRows.forEach(([lbl, val]) => {
+    doc.text(lbl, 15, y);
+    doc.text(fUSD(val), pw-15, y, { align:'right' }); y += 5;
+  });
+
+  y += 2; doc.setDrawColor(16,185,129); doc.line(15, y, pw-15, y); y += 5;
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(16,185,129);
+  doc.text('TOTAL ESTIMADO', 15, y);
+  doc.text(fUSD(t.total), pw-15, y, { align:'right' }); y += 5;
+  doc.setFontSize(8.5); doc.setTextColor(100,100,100);
+  doc.text(`En pesos: ${fARS(t.ars)} (TC $${fmt(exchangeRate)})`, 15, y); y += 7;
+  doc.setFont('helvetica','italic'); doc.setFontSize(7.5);
+  doc.text('* Valores estimativos. Sujeto a tipo de cambio oficial vigente al momento del despacho.', 15, y);
+
+  return doc.output('datauristring');
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+async function submitRequest() {
+  if (!validateForm()) {
+    showMsg('Completá todos los campos requeridos antes de enviar.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnSend');
+  btn.disabled = true;
+  btn.textContent = 'Procesando…';
+  showMsg('Generando estimado y enviando solicitud…', 'info');
+
+  const boxes = getBoxes();
+  const t     = calcTotals(boxes);
+  const warns = checkCompliance(boxes, t);
+  const cust  = {
+    name: vs('custName'), email: vs('custEmail'),
+    phone: vs('custPhone'), cuit: vs('custCuit'), address: vs('custAddress'),
+  };
+
+  let pdfBase64 = '';
+  try { pdfBase64 = generatePdf(cust, t, boxes, selectedCourier); } catch(e) { console.warn('PDF error', e); }
+
+  const payload = {
+    customer: cust,
+    shipping: { courier: selectedCourier, freight_rate_usd_per_kg: t.pricePerKg },
+    boxes: boxes.map(b => ({
+      name: b.label || `Caja #${b.id}`,
+      weight_kg: b.kg, L_cm: b.L, W_cm: b.W, H_cm: b.H,
+      weight_volumetric_kg: b.pVol, weight_chargeable_kg: b.pCob,
+      products: b.products.map(p => ({
+        name: p.name, qty: p.qty, weight_unit_kg: p.pw,
+        fob_unit_usd: p.fob, hs_code: p.hs, fob_total_usd: p.fobTotal,
+      })),
+    })),
+    totals: {
+      boxes_count: boxes.length, weight_real_kg: t.pesoReal, weight_chargeable_kg: t.pesoCob,
+      fob_total_usd: t.fob, freight_usd: t.flete, freight_rate_per_kg: t.pricePerKg,
+      insurance_usd: t.seguro, documental_costs_usd: t.gastosDoc, destination_costs_usd: t.gastosDest,
+      envexa_fee_usd: t.gestion, banking_fee_usd: t.comisionBancaria,
+      duties_usd: t.d, tasa_est_usd: t.tasa, iva_usd: t.iva,
+      total_usd: t.total, total_ars: t.ars, exchange_rate_ars: exchangeRate,
+    },
+    canal_especial: canalEspecial,
+    compliance_warnings: warns,
+    attachments,
+    pdfBase64,
+  };
+
+  try {
+    const resp = await fetch('/.netlify/functions/create-notion-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = JSON.parse(await resp.text() || '{}');
+    if (resp.ok && data.ok) {
+      showMsg(`✅ Solicitud enviada. Te enviamos el estimado a ${cust.email}. Un asesor te contactará pronto.`, 'success');
+      btn.textContent = 'Solicitud enviada ✓';
+    } else {
+      throw new Error(data.error || `HTTP ${resp.status}`);
+    }
+  } catch(err) {
+    console.error(err);
+    showMsg(`Error al enviar: ${err.message}. Intentá nuevamente o contactanos directamente.`, 'error');
+    btn.disabled = false;
+    btn.textContent = 'Enviar solicitud de cotización';
+  }
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('sendMsg');
+  el.classList.remove('hidden');
+  const c = {
+    success: 'p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800',
+    error:   'p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800',
+    info:    'p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800',
+  };
+  el.className = `mb-3 text-sm ${c[type] || c.info}`;
+  el.textContent = text;
+}
+
+// ── Canal Especial ────────────────────────────────────────────────────────────
+function setCanalEspecial(val) {
+  canalEspecial = val;
+  document.getElementById('btnCanalSi').classList.toggle('active', val);
+  document.getElementById('btnCanalNo').classList.toggle('active', !val);
+  document.getElementById('canalEspecialNote').classList.toggle('hidden', !val);
+}
+
+function openInfoModal() {
+  document.getElementById('modalCanal').classList.remove('hidden');
+}
+
+function closeInfoModal() {
+  document.getElementById('modalCanal').classList.add('hidden');
+}
+
+// ── File Attachments ──────────────────────────────────────────────────────────
+const ALLOWED_TYPES = ['application/pdf','image/jpeg','image/png',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-excel',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+const ALLOWED_EXT = /\.(pdf|jpg|jpeg|png|xlsx|xls|doc|docx)$/i;
+const MAX_FILES = 5;
+const MAX_SIZE = 10 * 1024 * 1024;
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.add('drag-over');
+}
+function handleDragLeave(e) {
+  document.getElementById('dropzone').classList.remove('drag-over');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('drag-over');
+  addFiles(e.dataTransfer.files);
+}
+function handleFileInput(e) {
+  addFiles(e.target.files);
+  e.target.value = '';
+}
+
+function addFiles(fileList) {
+  const errEl = document.getElementById('fileError');
+  errEl.classList.add('hidden');
+  const errors = [];
+  Array.from(fileList).forEach(file => {
+    if (attachments.length >= MAX_FILES) { errors.push(`Máximo ${MAX_FILES} archivos permitidos.`); return; }
+    if (!ALLOWED_EXT.test(file.name)) { errors.push(`"${file.name}": tipo no permitido.`); return; }
+    if (file.size > MAX_SIZE) { errors.push(`"${file.name}": supera 10 MB.`); return; }
+    if (attachments.some(a => a.filename === file.name)) { errors.push(`"${file.name}": ya agregado.`); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const b64 = ev.target.result.split(',')[1];
+      attachments.push({ filename: file.name, content_base64: b64, mime_type: file.type, size_bytes: file.size });
+      renderAttachments();
+    };
+    reader.readAsDataURL(file);
+  });
+  if (errors.length) {
+    errEl.textContent = errors.join(' ');
+    errEl.classList.remove('hidden');
+  }
+}
+
+function removeAttachment(idx) {
+  attachments.splice(idx, 1);
+  renderAttachments();
+}
+
+function renderAttachments() {
+  const list = document.getElementById('fileList');
+  if (!attachments.length) { list.innerHTML = ''; return; }
+  list.innerHTML = attachments.map((a, i) => `
+    <div class="file-item">
+      <span class="text-gray-500 dark:text-gray-400 flex-shrink-0">📄</span>
+      <span class="flex-1 truncate text-gray-700 dark:text-gray-300">${a.filename}</span>
+      <span class="text-gray-400 whitespace-nowrap">${(a.size_bytes/1024).toFixed(0)} KB</span>
+      <button onclick="removeAttachment(${i})" class="btn-danger" title="Eliminar">×</button>
+    </div>`).join('');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  fetchExchangeRate();
+  addBox();
+});
+</script>
+</body>
+</html>
