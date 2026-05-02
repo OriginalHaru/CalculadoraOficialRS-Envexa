@@ -25,29 +25,6 @@ exports.handler = async (event) => {
     // ── 1. Crear página en Notion ───────────────────────────────────────────
     const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-    const cajasResumen = (boxes || []).map((b, i) => {
-      const prods = (b.products || []).map(p =>
-        `${p.name} x${p.qty} — FOB USD ${p.fob_unit_usd}/u${p.hs_code ? ` (HS: ${p.hs_code})` : ""}`
-      ).join(", ");
-      return `Caja ${i + 1} (${b.name}): ${b.weight_kg}kg real / ${(b.weight_chargeable_kg||0).toFixed(2)}kg cobrable | ${prods}`;
-    }).join("\n");
-
-    const resumenFinanciero = [
-      `Courier: ${shipping?.courier}`,
-      `FOB total: USD ${n(totals?.fob_total_usd)}`,
-      `Flete: USD ${n(totals?.freight_usd)} (USD ${n(totals?.freight_rate_per_kg)}/kg)`,
-      `Seguro: USD ${n(totals?.insurance_usd)}`,
-      `DAI 35%: USD ${n(totals?.duties_usd)}`,
-      `Tasa Est. 3%: USD ${n(totals?.tasa_est_usd)}`,
-      `IVA 21%: USD ${n(totals?.iva_usd)}`,
-      `Gastos doc.: USD ${n(totals?.documental_costs_usd)}`,
-      `Gastos destino: USD ${n(totals?.destination_costs_usd)}`,
-      `Gestión ENVEXA: USD ${n(totals?.envexa_fee_usd)}`,
-      `TOTAL: USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars||0).toFixed(0)}`,
-      `TC oficial: $${n(totals?.exchange_rate_ars)} ARS/USD`,
-    ].join(" | ");
-
-    const cajasYProductosTexto = `${resumenFinanciero}\n\n${cajasResumen}`.substring(0, 2000);
 
     const page = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
@@ -69,9 +46,6 @@ exports.handler = async (event) => {
         },
         "Canal Especial?": {
           select: { name: body.canal_especial ? "SI" : "No" }
-        },
-        "Información de Cajas": {
-          rich_text: [{ text: { content: cajasYProductosTexto } }]
         },
         "Courier": {
           select: { name: shipping?.courier || "No especificado" }
