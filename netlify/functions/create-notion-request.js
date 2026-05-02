@@ -177,13 +177,24 @@ exports.handler = async (event) => {
               Un asesor de <strong>ENVEXA</strong> se contactará en las próximas 24 hs hábiles para confirmar el costo final.
             </p>
             <div style="background: white; border-radius: 8px; padding: 16px; margin: 16px 0; border: 1px solid #e2e8f0;">
-              <p style="font-size: 13px; color: #6b7280; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.05em;">Resumen</p>
+              <p style="font-size: 13px; color: #6b7280; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em;">Resumen del envío</p>
               <table style="width:100%; font-size:14px; border-collapse:collapse;">
+                <tr><td colspan="2" style="padding: 4px 0 2px; font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; border-top: 1px solid #f1f5f9;">Datos</td></tr>
                 <tr><td style="padding:4px 0; color:#6b7280;">Courier</td><td style="text-align:right; font-weight:600;">${shipping?.courier}</td></tr>
-                <tr><td style="padding:4px 0; color:#6b7280;">FOB total</td><td style="text-align:right;">USD ${n(totals?.fob_total_usd)}</td></tr>
-                <tr><td style="padding:4px 0; color:#6b7280;">Peso cobrable</td><td style="text-align:right;">${n(totals?.weight_chargeable_kg)} kg</td></tr>
-                <tr style="border-top:2px solid #e2e8f0;">
-                  <td style="padding:8px 0 4px; font-weight:700; color:#111827;">TOTAL ESTIMADO</td>
+                <tr><td style="padding:4px 0; color:#6b7280;">Dirección de entrega</td><td style="text-align:right; font-size:13px;">${customer.address || "—"}</td></tr>
+
+                <tr><td colspan="2" style="padding: 8px 0 2px; font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; border-top: 1px solid #f1f5f9;">Costos</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">FOB (mercadería)</td><td style="text-align:right;">USD ${n(totals?.fob_total_usd)}</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Flete aéreo</td><td style="text-align:right;">USD ${n(totals?.freight_usd)}</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Barreras arancelarias</td><td style="text-align:right;">USD ${n((totals?.duties_usd || 0) + (totals?.tasa_est_usd || 0) + (totals?.iva_usd || 0))}</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Costos fijos</td><td style="text-align:right;">USD ${n((totals?.documental_costs_usd || 0) + (totals?.destination_costs_usd || 0) + (totals?.envexa_fee_usd || 0) + (totals?.banking_fee_usd || 0))}</td></tr>
+
+                <tr><td colspan="2" style="padding: 8px 0 2px; font-size:11px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; border-top: 1px solid #f1f5f9;">Logística</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Peso total cobrable</td><td style="text-align:right;">${n(totals?.weight_chargeable_kg)} kg</td></tr>
+                <tr><td style="padding:4px 0; color:#6b7280;">Precio x kg</td><td style="text-align:right;">USD ${n(totals?.price_per_kg)}/kg</td></tr>
+
+                <tr style="border-top: 2px solid #e2e8f0;">
+                  <td style="padding:10px 0 4px; font-weight:700; color:#111827; font-size:15px;">COSTO TOTAL</td>
                   <td style="text-align:right; font-weight:700; color:#16a34a; font-size:16px;">${totalText}</td>
                 </tr>
               </table>
