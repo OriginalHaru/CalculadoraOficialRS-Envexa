@@ -17,6 +17,9 @@ exports.handler = async (event) => {
   const countryLabel = country === 'UY' ? 'Uruguay' : 'Argentina';
   const destFlag = country === 'UY' ? '🇺🇾' : '🇦🇷';
 
+  const ID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const requestId = 'ENV-' + Array.from({ length: 6 }, () => ID_CHARS[Math.floor(Math.random() * ID_CHARS.length)]).join('');
+
   if (!customer?.name || !customer?.email) {
     return { statusCode: 400, body: JSON.stringify({ error: "Missing required customer fields" }) };
   }
@@ -32,7 +35,7 @@ exports.handler = async (event) => {
       parent: { database_id: process.env.NOTION_DATABASE_ID },
       properties: {
         "Cliente": {
-          title: [{ text: { content: `⭐ ${customer.name}` } }]
+          title: [{ text: { content: `⭐ ${customer.name} - ${requestId}` } }]
         },
         "Correo Electronico": {
           email: customer.email
@@ -231,10 +234,44 @@ exports.handler = async (event) => {
       ],
     });
 
+    // ── 4. Email interno con adjuntos al equipo ────────────────────────────
+    await transporter.sendMail({
+      from: `ENVEXA <${process.env.SMTP_USER}>`,
+      to: "envexa.notificaciones@gmail.com",
+      subject: `PackingList y Proforma Invoice - ${requestId}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: #1c1c1c; padding: 20px; border-radius: 12px 12px 0 0;">
+            <h1 style="color: #FECA0D; margin: 0; font-size: 18px;">Nueva solicitud recibida</h1>
+            <p style="color: #9ca3af; margin: 6px 0 0; font-size: 13px; font-family: monospace;">${requestId}</p>
+          </div>
+          <div style="background: #f8fafc; padding: 20px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0;">
+            <table style="width:100%; font-size:14px; border-collapse:collapse;">
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0; width:40%;">Cliente</td><td style="font-weight:600;">${customer.name}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">Email</td><td>${customer.email}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">Teléfono</td><td>${customer.phone || "—"}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">CUIT</td><td>${customer.cuit || "—"}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">País destino</td><td>${countryLabel}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">Courier</td><td>${shipping?.courier || "—"}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">Total estimado</td><td style="font-weight:700;">USD ${n(totals?.total_usd)}</td></tr>
+              <tr><td style="color:#6b7280; padding:5px 12px 5px 0;">Archivos adjuntos</td><td>${attachments?.length || 0} archivo(s)</td></tr>
+            </table>
+            <p style="font-size:12px; color:#9ca3af; margin-top:16px; border-top:1px solid #e2e8f0; padding-top:12px;">
+              Ver Notion para el detalle completo · <a href="https://notion.so" style="color:#FECA0D;">Abrir Notion</a>
+            </p>
+          </div>
+        </div>
+      `,
+      attachments: [
+        ...(base64Data ? [{ filename: `cotizacion-${requestId}.pdf`, content: Buffer.from(base64Data, "base64") }] : []),
+        ...(attachments || []).map(a => ({ filename: a.filename, content: Buffer.from(a.content_base64, "base64"), contentType: a.mime_type })),
+      ],
+    });
+
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ ok: true, pageId: page.id }),
+      body: JSON.stringify({ ok: true, pageId: page.id, requestId }),
     };
 
   } catch (err) {
