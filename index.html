@@ -16,65 +16,67 @@
       border-radius: 0.5rem; font-size: 0.875rem; background: white; color: #111827;
       outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .input-field:focus { border-color: #FECA0D; box-shadow: 0 0 0 3px rgba(254,202,13,0.15); }
     .input-field.error { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important; }
-    .dark .input-field { background: #0f172a; border-color: #374151; color: #f3f4f6; }
-    .dark .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+    .dark .input-field { background: #111111; border-color: #374151; color: #f3f4f6; }
+    .dark .input-field:focus { border-color: #FECA0D; box-shadow: 0 0 0 3px rgba(254,202,13,0.2); }
     .card { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-    .dark .card { background: #0b1220; border-color: #1f2937; }
+    .dark .card { background: #1c1c1c; border-color: #2a2a2a; }
     .courier-card { border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
     .dark .courier-card { border-color: #374151; }
-    .courier-card.selected { border-color: #10b981; background: #f0fdf4; }
-    .dark .courier-card.selected { border-color: #10b981; background: rgba(16,185,129,0.08); }
+    .courier-card.selected { border-color: #FECA0D; background: #fffdf0; }
+    .dark .courier-card.selected { border-color: #FECA0D; background: rgba(254,202,13,0.08); }
     .box-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
-    .dark .box-card { background: #0f172a; border-color: #1f2937; }
+    .dark .box-card { background: #111111; border-color: #2a2a2a; }
     .product-row { display: grid; grid-template-columns: 2fr 0.6fr 0.9fr 0.9fr 1fr auto; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem; }
     @media (max-width: 640px) { .product-row { grid-template-columns: 1fr 1fr; } }
-    .btn-primary { background: #10b981; color: white; padding: 0.75rem 2rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: background 0.15s, transform 0.1s; width: 100%; }
-    .btn-primary:hover:not(:disabled) { background: #059669; }
+    .btn-primary { background: #FECA0D; color: #1c1c1c; padding: 0.75rem 2rem; border-radius: 0.75rem; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: background 0.15s, transform 0.1s; width: 100%; }
+    .btn-primary:hover:not(:disabled) { background: #d4a800; }
     .btn-primary:active:not(:disabled) { transform: scale(0.98); }
     .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; }
-    .btn-secondary { background: transparent; color: #10b981; border: 1px solid #10b981; padding: 0.4rem 0.9rem; border-radius: 0.5rem; font-size: 0.8rem; cursor: pointer; transition: background 0.15s; }
-    .btn-secondary:hover { background: #f0fdf4; }
-    .dark .btn-secondary:hover { background: rgba(16,185,129,0.1); }
+    .btn-secondary { background: transparent; color: #1c1c1c; border: 1px solid #FECA0D; padding: 0.4rem 0.9rem; border-radius: 0.5rem; font-size: 0.8rem; cursor: pointer; transition: background 0.15s; }
+    .btn-secondary:hover { background: #fffdf0; }
+    .dark .btn-secondary { color: #FECA0D; }
+    .dark .btn-secondary:hover { background: rgba(254,202,13,0.1); }
     .btn-danger { background: transparent; color: #ef4444; border: 1px solid #fca5a5; padding: 0.25rem 0.5rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer; transition: background 0.15s; }
     .btn-danger:hover { background: #fef2f2; }
     .dark .btn-danger { border-color: #7f1d1d; }
     .dark .btn-danger:hover { background: rgba(239,68,68,0.1); }
     .summary-table { width: 100%; border-collapse: collapse; }
     .summary-table td { padding: 0.4rem 0.4rem; font-size: 0.875rem; }
-    .summary-table tr.section-header td { font-weight: 600; color: #22c55e; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.85rem; }
-    .summary-table tr.total-row td { font-weight: 700; font-size: 1rem; color: #10b981; border-top: 2px solid #10b981; padding-top: 0.5rem; }
-    .dark .summary-table tr.section-header td { color: #4ade80; }
+    .summary-table tr.section-header td { font-weight: 600; color: #d4a800; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 0.85rem; }
+    .summary-table tr.total-row td { font-weight: 700; font-size: 1rem; color: #1c1c1c; border-top: 2px solid #FECA0D; padding-top: 0.5rem; }
+    .dark .summary-table tr.section-header td { color: #FECA0D; }
+    .dark .summary-table tr.total-row td { color: #FECA0D; }
     .alert-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #92400e; margin-bottom: 0.4rem; }
-    .dark .alert-warning { background: rgba(251,191,36,0.07); border-color: #b45309; color: #fcd34d; }
+    .dark .alert-warning { background: rgba(254,202,13,0.07); border-color: #FECA0D; color: #FECA0D; }
     .alert-error { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #991b1b; margin-bottom: 0.4rem; }
     .dark .alert-error { background: rgba(239,68,68,0.08); border-color: #dc2626; color: #fca5a5; }
-    .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #1e40af; margin-bottom: 0.4rem; }
-    .dark .alert-info { background: rgba(59,130,246,0.07); border-color: #3b82f6; color: #93c5fd; }
+    .alert-info { background: #f8f9fa; border: 1px solid #d1d5db; border-radius: 0.5rem; padding: 0.65rem 1rem; display: flex; gap: 0.5rem; font-size: 0.85rem; color: #374151; margin-bottom: 0.4rem; }
+    .dark .alert-info { background: rgba(255,255,255,0.04); border-color: #374151; color: #9ca3af; }
     label.field-label { display: block; font-size: 0.78rem; font-weight: 500; margin-bottom: 0.25rem; color: #374151; }
     .dark label.field-label { color: #9ca3af; }
     .toggle-btn { border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.45rem 1.2rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; background: transparent; color: #6b7280; }
-    .toggle-btn.active { border-color: #10b981; background: #f0fdf4; color: #059669; font-weight: 600; }
+    .toggle-btn.active { border-color: #FECA0D; background: #fffdf0; color: #1c1c1c; font-weight: 600; }
     .dark .toggle-btn { border-color: #374151; color: #9ca3af; }
-    .dark .toggle-btn.active { border-color: #10b981; background: rgba(16,185,129,0.1); color: #34d399; }
+    .dark .toggle-btn.active { border-color: #FECA0D; background: rgba(254,202,13,0.1); color: #FECA0D; }
     .info-btn { width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 1.5px solid #9ca3af; color: #9ca3af; font-size: 0.72rem; font-weight: 700; cursor: pointer; background: transparent; display: inline-flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.15s; flex-shrink: 0; }
-    .info-btn:hover { border-color: #10b981; color: #10b981; }
+    .info-btn:hover { border-color: #FECA0D; color: #1c1c1c; background: #FECA0D; }
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
     .modal-content { background: white; border-radius: 1rem; padding: 1.5rem; max-width: 28rem; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-    .dark .modal-content { background: #0b1220; border: 1px solid #1f2937; }
+    .dark .modal-content { background: #1c1c1c; border: 1px solid #2a2a2a; }
     .dropzone { border: 2px dashed #d1d5db; border-radius: 0.75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
-    .dropzone:hover, .dropzone.drag-over { border-color: #10b981; background: #f0fdf4; }
+    .dropzone:hover, .dropzone.drag-over { border-color: #FECA0D; background: #fffdf0; }
     .dark .dropzone { border-color: #374151; }
-    .dark .dropzone:hover, .dark .dropzone.drag-over { background: rgba(16,185,129,0.05); border-color: #10b981; }
+    .dark .dropzone:hover, .dark .dropzone.drag-over { background: rgba(254,202,13,0.05); border-color: #FECA0D; }
     .file-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; font-size: 0.8rem; margin-bottom: 0.3rem; }
-    .dark .file-item { background: #0f172a; border-color: #1f2937; }
+    .dark .file-item { background: #111111; border-color: #2a2a2a; }
   </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+<body class="bg-gray-50 dark:bg-[#111111] text-gray-900 dark:text-gray-100 min-h-screen">
 
   <!-- HEADER -->
-  <header class="bg-[#0b1220] text-white px-5 py-3.5 flex items-center justify-between shadow-lg sticky top-0 z-40">
+  <header class="bg-[#1c1c1c] text-white px-5 py-3.5 flex items-center justify-between shadow-lg sticky top-0 z-40">
     <div class="flex items-center gap-3">
       <img src="data:image/webp;base64,UklGRjgZAABXRUJQVlA4WAoAAAAgAAAA/wMA/wMASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggShcAALBAAZ0BKgAEAAQ+USiSRqOioiEg0riAcAoJaW7ylh4ZC13+HYqOfrH5Pbmj1D8k/yl9ATS/zL8AfkHsjPO88H/FP8b/Yf29/u3049CfmAfwn+E/5P+w/il3J/MB+wHrZ+hb/N+oB/Kf8H///+v2hPoAfuh6tH+w/bj4LP2j/7f/D+Ab+Rf3v/gfn/8gHoAdW/6V/aP7R+O/hX/WvP+vegKfZ78r8x35L7F+AF+I/yH/NezS+ScBd5f9P7BUzX8txsuOgoAfyL+0f9L1S/9b/O+fH6c/7/+Z+Az+Wf1X/hdff9ovYm/YQH/amnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jzamnwhg+r2oQttHct4fWAQht4fWAQht4fWAQht4fWAQht4fWAQeo/q2zT4QwfWPNqafCGD6x4dbd8Icv8fB4akfdRO4gKV8ku/uIClfJLvpFfW8X1jzamnwhg+sebU095pKc0XqW+2R+1NPhDB9Y82pp8IYPU7WD6x5tTT4QwfSymnwaZ8xdK6kI0xjh8IYPrHm1NPhDB6nawfWPNqafCGD6x5tTCwF0rm7biMcPhDB9Y82pp8IYPq9XL6x5tTT4QwfSymnwg40todRu9CbTGOHwhg+sebU0+ELvHtpjHD4QwfWPFD0a1EsB6CgARGOHwhg+sebU0+EMH1jXjt970Yb7iX71s7+EMHqA/V6haqafCGD6x5tTT4QwfWPNmDHTGOHwhg+sebU0+EHZ/8xNotpjD6tyHqY8sfWAQht4fWAQht4fWAQhtRrDeWPrAIQ2rspkX4QwfWPNqafCGD6xq9u3tH1jw0H7ujOy3h9YA763h9YBCG3h9YBCG3h9Xgb63h9YBCG1cBchEcOuPfR3MOC0xjh8IYPW0TT3pcvrHiIhNpjHD4QwfWPNqae9MQdI9QGR//2lojBHfVfHzfXsuFcvrHiIhNpinUfhdH1jzamK5eadG3/mBRqR+iFtLobY2LT6E2mKRjpjG0F6IFpjHD4QwfWPNqaUZd8FuDI03/AZgqSZtTT4QwfWPERCbTFIwp9CbTGOHwhg+sebUGBRcokxPoStQ05q+I76seKHqSJjvi/IW18QwjTojvqx5tTT4QwfWPEST8+zvA9d/cxwBpBM1jzamnwhg+k8F6E1q6j/MlTNYBCG3h9YBB6j+q+UUTp3l/dHTvL+6OneX90dO8v7o6d5f3M95jF/G+3wDc0lGLwXHRq7U0+EMF8Ecce2mMcPhDB9J4KKGnnU7Iox8itk8Yy8NeW3QHS/jlay2nbXxHfVjxQY5r20xjh8IYPpPBRask08TV/h2P7VtBJfv0EwrUcyaukvrHm1NPhC7x7aYxw+EMH0ngotNTGHYAHBHfVe3m4SiVBRnAIt3i0JtMY4fCDyQm0xjh8IYPU7TlAkXtqQD6E2l3Gi3tYNbMpS182TMD6x5tQnHHHtpjHD4QwfSeCi01Nq+rmHeW3wusa4YcP2g+/2/6pCLG0xjh8IPJCbTGOHwhg9TtOTzqtsAr8MHreJk88DrrzCu3MQHWoWMfwg/nigxx7u6Bz1jzamnwhd49W01MYeQXC9Zo9wK29gJpoGsXXKVHJoTbJHHJGd/CF3j20xjh8IYPpPBRauL+zJj4RCXoMktJgiPlSh21Y82pp8IYPU7WD6vPsWlHj6wCENvD6wCD4vbyWweg/PmnzTp3l/dHTvL+6OneX90dO8v7o6bXAB1NnQ6QRH3F/JF4EMH1jzamnwg8kJtMUjCWPCGD6x7hybTGOHwa6jstEBUhgUOLKomnwhg+sebUxBi1NPDqBktPhDB9Y82pp8IYLMS/qJkxaLiuA6h4+mXah9fEckzamk5yyCyI75TaUjG1dH1jxJu1D6+I45p7mjaAFgNQxj3jGMN8l682pp4eC9Ca3d5d/CGD6x5tTT4QwfSe2sYSFhP9cuE0TT4QwetnmrnAMWpp4MmEjK3NpjHD4Qfzzamnwg8o5gUbB60+ieRx31LKafCGD6vMbcLHIjvknQq9AGlRekBSvkl39xAUr5Jd/cPZ3RiYvkD93lPYNfwhg+sebU0+EMFprIAzJ8IPNIXwOKvUtggK6z65Xw1QF1YBgLqwDAXVgGAurAMBdWAW00lvD6wCENvD6wA+66ENqJ6x5tTT4QwfWPNlu+kgvILTGOHwhg+sebU0+EMH0ngvQm0xjh8IYPW0TSpljrppF/tmnwhg+sebU0+EMH1jxEQm0uiP6sebU0+EMH1eKKMSo80N2ofXxHfVjzamnwhg+sa8eE2mMcPhDB9Y82pp7zXcwaeE9YycPhDB9Y82pp8IYPrHmbXtpjHD4QwfWPFD0a1JYY7/xcnXhairHm1NPhDB9Y82pp8GuO33vRhvlNAPnDRNPhDB6cNSidY+sBxtiO+rHm1NPhDB9Y82oLtYPpTXJLT4Qfzzamnwhd6X/+GtXL7aF3m1lFr4jvqx5tTT4QwfSeCm82pp8IYPrHm1NPhDB9XlxbGyD2WGICRUklvDdlgUsAhDbw+sAhDbw+sAhDbw+sAhDbwyowrsebU0+EMH1jzamnwhg+seKIFpjHD4QwfWPNqafCGD6x5tTT4QwfWPNqafBtsNhaYxw+EMH0spp8IYL4I7rgjvqx4ogWh94QwerXV38IYPpZQdvBHfVjzOJnjGJGNq6PrHm1NPhDB61wmiafCGD6WU0+EMH1jzamnwhg+sebU0+EMH1jzZmtMY4fCGD6x5tTT4QwfWPNqafCGD6x5tTT4Qwetomnwhg+sebU0+EMH1jzamnwhg+sebU0+EMH1jZ38IYPrHm1NPhDB9Y82pp8IYPrHm1NPhDB9Y8ziaJp8IYPrHm1NPhDB9Y82pp8IYPrHm1NPhDB9Xt682pp8IYPrHm1NPhDB9Y2d/CGD6WU0+EMH0sYxiRTqoj6WU0qfW4NLKYld0vOM2w+NY82pp8IYPrHmdjaYxw+EMH1jzamnwhg+sebU0+EMH1jzamnwhgvgjvqx5tTT4QwfWPNqafCGD6x5ssAD+/7WQVZQA3LidsGvRUfM1EaM69TAuUARGAAMIEAImgFYAAS6AM+4nbBryqRNJ3iwAAg0kVjRQhUAARZ8AAUdFWscxLyIXM73+fiKtntduvcGwEFfhOAfdfZmEPKUt2e8OQjkACswo+NXb/wkEBKVZOqHOg93XnZiLki0rctJ8XEzZP0ssilC149S80A/x2tzpOYoa1x2Ed1SNp6yopUGi/uGX+JGzldJU/1pZfC+LqziumV2vaEvHOA7QecENo3Ji8K1//jaGZVOsp2E5HihkPSzkKH/teoAVKuAVtu1B4B3y6ddwEzgSxUxaXgDQe7eECh6HRzKF4UiwzdDCgYMtukJ8wWtkPraeW81AYlgGbpFSo16y/urQloRZzu+wlXL/jxvaprEJ2thOKsjTfI389our9oANh3Q0O0b932YoMOhO5tcuU+FnnT8iOGTjmXXCqzP86Z2o9aKOY3/dPBM4agRhAyt3qt+x4FP8hJ/BaKAnSrctYqf+oq7xaGPhwypHYXhulu/AH5RncP7NJt7UgGH7D8CaYvxiiEAJLY6KwApUEFZwsJjSUdxZtf4wjYaG3gzvJtD0qtY5o5UV9LJqLUgG7HT0kBH0WAAN0aqzTL//eAHHkmViGHAbi4d+63oFoztakwDRqvUplxkcgeo3DhsjAKiIAr/6duSrynvIpvo36Mnm/QblEL5lXPfYEEfu2/TMakzPW1bADwc3kLpeUaAAAGDtUPvOva4SlMrncS7/P4R7MNmLLthGYx3yivdYtWD/F0AEnaESDHKPy19/h/kqGSt5kXodhmtJlBW0xLq2mvC8Wn9SioEvBcp5lyQ+FvEVk5JM9l4y4tDHUHAuhhl7GQczvsesLpDgHIG+/W2IK410/oKAmuzCNkur8+avDffFHQ71Mfx0jWXJaeBPvqSe+A1DLk4vtqZitMqDPPirW4ecmc0S/DIX9zsfJjG/hU74cuqt871Z1P4r6nH1aHKtGm/Z+oP5+RPpYVZZUaYzMSA/hWqFdInebV/ZOffiffdOrc4bEgVknIDGqChG3iqFsNC93gFyz+3TgJ+2QK7m0cKcqwoD5WOLj1vAi3lo7ptZhQViTd/REF2eTUB0+OoG1derbU1Fj/1XVM9eCgTdN3wyEJ6Fnign4T7fe0zxwfvUSPNpZbh8F7qINUAUiItmtECwSSzZupiYLr/T51nxGBfbjtiHMBeC5iQIDbE+tfWg8vFF8JewynoF6PCv3R42EdN8rzPFWmtgMFxn3mlO6/7LdsxaMRgjdEtoyB15ogIxobPerAPQ0Wsxqg2NGUzGVEdhcVfm6Zpk26BORtqg4GkEg3oO70THvzfFza/p7wgBtHYDYZwi8BIQTpcRwh/DHQA9ULNlNvP7vXHye8EoNIBYPF4l9voN2LH/uGgof+NfGyno75H0JlIBiiI+1y8Bjkymi9m4cGNTueD9DWl72+WuTH+57FsykUkIxKNvdl4h8Kd5gvBE2gkGDNverO9BHOJUoYkw1hqMBMhsD958UiO7XbfdDW0MZsZrxJUgdILoc29jITPp9v7Srp22CE/UlXVYprdf4AtCrmsw6y9CtHB7SndKSN0pzsGqz4z1LPnUXxbWQMPDWYbF+ZTAAHSAI1954Dyn4BgrRQK0jK4bgZZnKKrgObPPQF/Ss4iI229MhcGp1ACURH83tGjNoEjPUsr2cdq9MRNTgEzSuQrShfdoegt4hvCxPdfV5piuha9tUC9PfHcsIOnNrwx6FMBILibJtir1l/KiSybS+0lH84cR0P9Z53XhSb3TK/eNks4qKAQWgiWywds3y4xXVM7RyDvGWtZ7TRLnxpgnQplD29V0ndU6kHIbEGBZBsoUH3tZTNyXnuvg2Sls0l2INE5uC8wwXo0Rkr6IIJwlAxOoETgqVODjhhhYHKo/QH+wtABMYQFPMI7iAiXMiVmwJr64rAxmND8TGssvSIKKMhrX6Ds8HF7PE7ggmh9gf6Q56l/YLzqne5VqTarPhVKS2X8rv2HZh73/CfY9JyI9tJoYm45yv++HA1PG+K4EDDHu07hzWqwEMegGJr9OB1FBSN8DtwEEkNyXGaBooi8EIebuIYoOF5mtNeR8Z1AnOw3Dy6rNCjSBc6A0uW0hzuND9xQUrND7MaxzSdIe5yAVSb/EeolQcWPwTeeDy4Gf3GIJg18qmc9/5pg6W7ZeH7i1zQNVFxlvDV9YFE+t1odn6iRAioy0gio3mX00f78lwFr7mzYj09Wh5CuNiWuqeOOK6exzuW620iF44BYPoHBGyigDO5PVahqlT0RUmyeV7mu1Ag47mEd0zHscPjDOwfnIPUXHgoA6kNQJ5eSvQtPr0vVVWvJCk3SmyxzZxE9AqAv3uCX+24YI5Qq8AjA9Vut+5h5xy/NZ0AM7iQzU2qF3WEI5MWlQi0GqiD5jk8t4yN3LitlR1kc1W1nrpYZCbcj7/w/S3wxjHeMyXuM3GlY2WeP/O2KznOMsGXfwuHT3gwX2n9l3EWG0ebX/cPg0Ozp/I1EpCaXeErBCOAQAmrMLuCOY2xVS859vzMF1dFr4fWpFoAXtez7rWH2o8DYDIWEq5RxLPJcABd2BQFS9DN3MSQZMJtVG4/hx7fqsbyTj/iNhLuxzJx1+DPUAkC2sY4H1x55xTsub2z1XFxaeVY0My02ZEJ8WHfBQKPaWizQVfbDHQV9DYxbfMS9CiPy2IEYN+yanam6S1KUFB8J+J9aR/I6zTHK3/XzvF18K3IbFVsmBd/zL3YwNIPIYMr6W8uU5305QArMePfi74xOsj+snFuirfrxR3+lD2ZYBwd9fLb24lWZCuivvUcSfNLEBOD7zbemMmhF1Z1g9OYCRzUpPl5BbdBYXDXz0ETjsUKjRcL7DFeyfLS9kHv17eMFeHgUydz8tikxEYDygmBPEM0w3BUhiPRmBSSaimiUQV8FGMFaAVoaMveXVUpiufQ1TDjeMYlBkcW9mW7f5MMQPJx1UfSBaJtMXaIKWpAC0sxfYHooBZrKFaLmLr2vdGobXcu/zCqPeWNYk18mFLTLzdth6k07XQKLOXRdew4ZwGU02GGOT5nt0S8V17qrkYdL83IMfuCYhzDrybPNTxElbQAMmYgQwK1VZBIlkXPB5WlZrU4JaHKRaDjsRq5ZfpXXfY92dir7ubugVU30UFwCmOBOPAczH5RHtCO7am/xJjH6THvkTZ3AoD3H6lXRUS2mZ4nTsI4On+gDMKBFNRzMBKzU3ZNt+yanam6S1N4Nn3u71ynFZFcc4SCBsV2xC6QfXK8FjkAEjjGwubpHadH+LJI4xV5bXX81NVzAKSAAma2BBRjibqZSvgYIVq6WQZNdz16spAW+r8F9aT1nNDyyo9PxOeVTeLrqTGpK0TKS9WMArCjCW9xgzORY237Y1CWsI8OYYW6BSCE7hG1sA4fGB1qSMR6kiNX9qu+UYYYylxzEkGTBkeCHzFCNsOD9UXMX0tHFgXIw7KG//7/bngwHNPYrEs34ujQNAl0OMdG/ePn0wrqT7FvO6AnYUAUDQADiAXrN/qntE+me9X5KurpIoIAVfghJXlVAHBFGKE/9lnCTmgm873/s7aJkaW4RKaxaLvcJDeZvEYzonLPe38LEfaWBpZzsfTuxh2jgMbXrsr/3Ceu4sV+4YCv+r//ZUq/HizV3Yy326DjcVeEipCeixGvrD/1GrtX+S8dTatTCDdgVCGwacb7IxhGvGJHIYK7ynLlXw6C3WKvgVzKBRwn3PxPE+m8HKOaR+HBOhqmU9KU4+YvV0brrzXjAZ9vJPc9dTHP71+CxJoGD7u4cqfo1oaeoAAnXV7+v/QGzwFTcT/O4AFdEy+V5LyQoQwsGPBQVm6AO31iq7jKcq4XgEiGrHd/SKNpQ3Y8Mr9MICPi4AFWfFwM0Ogp5KIAWP/bnWnqH/EoG4IzW3+puGJNntpqaCPATYVRdsA6pgf9WwxQPOWhZbEMB0QRP8jG3CMZ7HcF50cYZVS+QFaftD9BfAAAFF0LuQYyxqN3BpuR3TcItK1o13FdbiZMaXcXS1xhpqaF5C1VDgABUrVKXeDsktW1tjnGFEwr454wzV+DjW0afs37pkm5iEoG1iriRWTA4um0cKn6eMAAEBoNmROQkwBJ7Mk311w0fexRjgWxhDnrtojhAD37wtS9IMxMB/L6lAdqpOn4N4RgAITaNXTsa18I4R9B+C4xjFigqQJoc+VHVPOWmyAN1U/t5ltcQefTu96wwrVEIvY6sHgZq3fpJIP4KgZD2W6AABmLcaRxt3BqvlYMfmJ0byb4ydX1LURT/tX81bkq1VUYguQPLBQt6EMnEo/necpb8tTd6F+69vBAwH68rcfpScoi5H9Q1b5CO7Oub186lSz3ZWbWvjeXDtAIcSVtAAR1286jBV/+CqeeOVOkWkclGTl46jA4V767ovE7jEPGkxxyuWamQhAV6BQ0WHrsjdEd6uXL7AAi0AAAAAAAAAAAADYXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
         alt="ENVEXA" class="h-9 w-9 object-contain rounded">
@@ -106,7 +108,7 @@
     <!-- SECTION 1: CUSTOMER DATA -->
     <section class="card p-5">
       <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">1</span>
+        <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">1</span>
         Datos del solicitante
         <button class="info-btn ml-auto" type="button" onclick="openSolicitanteModal()">?</button>
       </h2>
@@ -131,20 +133,27 @@
           <label class="field-label" for="custAddress">Dirección de entrega <span class="text-red-500">*</span></label>
           <input class="input-field" id="custAddress" type="text" placeholder="Calle, número, ciudad, provincia" oninput="recalc()">
         </div>
+        <div class="sm:col-span-2">
+          <label class="field-label">País de destino</label>
+          <div class="flex gap-2 mt-1">
+            <button id="btnCountryAR" class="toggle-btn active" onclick="setCountry('AR')">🇦🇷 Argentina</button>
+            <button id="btnCountryUY" class="toggle-btn" onclick="setCountry('UY')">🇺🇾 Uruguay</button>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- SECTION 2: COURIER -->
     <section class="card p-5">
       <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">2</span>
+        <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">2</span>
         Courier de preferencia
       </h2>
       <div class="grid grid-cols-2 gap-3">
         <div class="courier-card" id="cardDHL" onclick="selectCourier('DHL')">
           <div class="flex items-center gap-3">
             <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-500 flex items-center justify-center flex-shrink-0" id="radioDHL">
-              <div class="w-2 h-2 rounded-full bg-emerald-500 hidden" id="dotDHL"></div>
+              <div class="w-2 h-2 rounded-full bg-[#FECA0D] hidden" id="dotDHL"></div>
             </div>
             <div>
               <div class="font-semibold text-sm">DHL Express</div>
@@ -155,7 +164,7 @@
         <div class="courier-card" id="cardFedEx" onclick="selectCourier('FedEx')">
           <div class="flex items-center gap-3">
             <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-500 flex items-center justify-center flex-shrink-0" id="radioFedEx">
-              <div class="w-2 h-2 rounded-full bg-emerald-500 hidden" id="dotFedEx"></div>
+              <div class="w-2 h-2 rounded-full bg-[#FECA0D] hidden" id="dotFedEx"></div>
             </div>
             <div>
               <div class="font-semibold text-sm">FedEx International</div>
@@ -171,7 +180,7 @@
     <section class="card p-5">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-base font-semibold flex items-center gap-2">
-          <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">3</span>
+          <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">3</span>
           Cajas y productos
         </h2>
         <button onclick="addBox()" class="btn-secondary">+ Agregar caja</button>
@@ -187,7 +196,7 @@
       <div class="flex items-center justify-between flex-wrap gap-3">
         <div class="flex items-center gap-2 flex-wrap">
           <h2 class="text-base font-semibold flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">4</span>
+            <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">4</span>
             ¿Tus productos requieren canal especial?
           </h2>
           <button class="info-btn" onclick="openInfoModal()" title="¿Qué es esto?">?</button>
@@ -205,7 +214,7 @@
     <!-- SECTION 5: ARCHIVOS ADJUNTOS -->
     <section class="card p-5">
       <h2 class="text-base font-semibold mb-1 flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">5</span>
+        <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">5</span>
         Adjuntá tu Factura Proforma y Packing List
         <span class="text-xs font-normal text-gray-400 dark:text-gray-500">(opcional)</span>
       </h2>
@@ -243,7 +252,7 @@
     <!-- SECTION 5: COST SUMMARY -->
     <section id="summarySection" class="card p-5 hidden">
       <h2 class="text-base font-semibold mb-4 flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center font-bold flex-shrink-0">6</span>
+        <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">6</span>
         Estimado de costos
       </h2>
       <div id="summaryContent"></div>
@@ -308,8 +317,8 @@
   <!-- MODAL: ÉXITO POST-ENVÍO -->
   <div id="modalSuccess" class="modal-backdrop hidden" onclick="if(event.target===this)closeSuccessModal()">
     <div class="modal-content text-center">
-      <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mx-auto mb-4">
-        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: rgba(254,202,13,0.15);">
+        <svg class="w-8 h-8" style="color:#FECA0D" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
       </div>
       <h3 class="font-bold text-xl text-gray-900 dark:text-gray-100 mb-2">¡Solicitud enviada!</h3>
       <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">
@@ -324,6 +333,7 @@
 // ── State ─────────────────────────────────────────────────────────────────────
 let exchangeRate = 1200;
 let selectedCourier = null;
+let selectedCountry = 'AR';
 let boxCounter = 0;
 const prodCounters = {};
 let canalEspecial = false;
@@ -373,7 +383,7 @@ function selectCourier(name) {
     document.getElementById('card' + c).classList.toggle('selected', selected);
     document.getElementById('dot'  + c).classList.toggle('hidden', !selected);
     const ring = document.getElementById('radio' + c);
-    ring.style.borderColor = selected ? '#10b981' : '';
+    ring.style.borderColor = selected ? '#FECA0D' : '';
   });
   document.getElementById('courierError').classList.add('hidden');
   recalc();
@@ -417,7 +427,7 @@ function addBox() {
         <input class="input-field" id="bW2-${id}" type="number" min="0" step="0.01" placeholder="0.00" oninput="recalc()">
       </div>
     </div>
-    <div class="text-xs text-emerald-600 dark:text-emerald-400 mb-3 font-medium" id="bsumm-${id}"></div>
+    <div class="text-xs font-medium mb-3" style="color:#d4a800" id="bsumm-${id}"></div>
     <div>
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Productos</span>
@@ -575,19 +585,34 @@ function calcTotals(boxes) {
   const gestion        = ENVEXA_FEE_USD;
   const comisionBancaria = flete * 0.02;
 
-  const cif  = fob + flete + seguro;
-  const d    = cif * 0.35;
-  const tasa = (cif + d) * 0.03;
-  const iva  = (cif + d + tasa) * 0.21;
+  const cif = fob + flete + seguro;
 
-  const total = cif + d + tasa + iva + gastosDoc + gastosDest + gestion + comisionBancaria;
+  let d, tasa, iva, anticipoIva, total;
+
+  if (selectedCountry === 'UY') {
+    // Uruguay: sobre CIF primero, luego sobre CIF+arancel
+    d          = cif * 0.18;              // Arancel de importación 18%
+    tasa       = cif * 0.09;              // Tasa aduanera 9%
+    const base2 = cif + d;
+    iva        = base2 * 0.22;            // IVA de importación 22%
+    anticipoIva = base2 * 0.10;           // Anticipo de IVA 10%
+    total = cif + d + tasa + iva + anticipoIva + gastosDoc + gastosDest + gestion + comisionBancaria;
+  } else {
+    // Argentina
+    d    = cif * 0.35;
+    tasa = (cif + d) * 0.03;
+    iva  = (cif + d + tasa) * 0.21;
+    anticipoIva = 0;
+    total = cif + d + tasa + iva + gastosDoc + gastosDest + gestion + comisionBancaria;
+  }
 
   return {
     pesoReal, pesoCob, fob,
     pricePerKg, flete, seguro,
     gastosDoc, gastosDest, gestion, comisionBancaria,
-    d, tasa, iva, total,
+    cif, d, tasa, iva, anticipoIva, total,
     ars: total * exchangeRate,
+    country: selectedCountry,
   };
 }
 
@@ -602,13 +627,19 @@ function checkCompliance(boxes, t) {
         w.push(`⚠️ HS ${p.hs} (caja #${b.id}) pertenece a una categoría de revisión especial.`);
     });
     const nombreCaja = b.label || `Caja #${b.id}`;
-    if (b.pCob > 50) {
-      w.push(`🚫 El bulto ${nombreCaja} supera los 50 kg. No es posible enviarlo por régimen simplificado aéreo. Contactanos para evaluar alternativas.`);
-    } else if (b.pCob > 23) {
-      w.push(`⚠️ El bulto ${nombreCaja} supera los 23 kg y no cumple con los requerimientos del envío express. No hay problema porque no pasa los 50 kg, pero se le va a sumar un extra por superar los 23 kg.`);
+    if (selectedCountry === 'AR') {
+      if (b.pCob > 50) {
+        w.push(`🚫 El bulto ${nombreCaja} supera los 50 kg. No es posible enviarlo por régimen simplificado aéreo. Contactanos para evaluar alternativas.`);
+      } else if (b.pCob > 23) {
+        w.push(`⚠️ El bulto ${nombreCaja} supera los 23 kg y no cumple con los requerimientos del envío express. No hay problema porque no pasa los 50 kg, pero se le va a sumar un extra por superar los 23 kg.`);
+      }
+    } else {
+      if (b.pCob > 23) {
+        w.push(`⚠️ El bulto ${nombreCaja} supera los 23 kg. Se le va a sumar un extra por superar los 23 kg.`);
+      }
     }
   });
-  if (t.fob > 3000) w.push(`⚠️ El valor FOB total supera los USD 3.000 del límite de Régimen Simplificado. Es probable que tengamos que dividir la carga en más de 1 envío.`);
+  if (selectedCountry === 'AR' && t.fob > 3000) w.push(`⚠️ El valor FOB total supera los USD 3.000 del límite de Régimen Simplificado. Es probable que tengamos que dividir la carga en más de 1 envío.`);
   return w;
 }
 
@@ -675,9 +706,16 @@ function renderSummary(t, boxes) {
       ${row(`Flete aéreo (${fmt(t.pesoCob)} kg × USD ${t.pricePerKg}/kg)`, t.flete)}
       ${row('Seguro (1% del FOB)', t.seguro)}
       ${head('Impuestos y tasas')}
-      ${row('Derechos de importación (DAI 35%)', t.d)}
-      ${row('Tasa estadística (3%)', t.tasa)}
-      ${row('IVA (21%)', t.iva)}
+      ${t.country === 'UY' ? `
+        ${row('Arancel de importación (18% s/CIF)', t.d)}
+        ${row('Tasa aduanera (9% s/CIF)', t.tasa)}
+        ${row('IVA de importación (22% s/CIF+arancel)', t.iva)}
+        ${row('Anticipo de IVA (10% s/CIF+arancel)', t.anticipoIva)}
+      ` : `
+        ${row('Derechos de importación (DAI 35%)', t.d)}
+        ${row('Tasa estadística (3%)', t.tasa)}
+        ${row('IVA (21%)', t.iva)}
+      `}
       ${head('Costos operativos')}
       ${row('Gastos Despacho Exportación 🇨🇳', t.gastosDoc)}
       ${row('Gastos Despacho Importación 🇦🇷', t.gastosDest)}
@@ -690,7 +728,7 @@ function renderSummary(t, boxes) {
     </table>
     <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-sm flex-wrap gap-2">
       <span class="text-gray-500 dark:text-gray-400">En pesos (TC $${fmt(exchangeRate)})</span>
-      <span class="font-semibold text-emerald-600 dark:text-emerald-400 text-base">${fARS(t.ars)}</span>
+      <span class="font-semibold text-base" style="color:#FECA0D">${fARS(t.ars)}</span>
     </div>`;
 }
 
@@ -752,7 +790,8 @@ function generatePdf(cust, t, boxes, courier) {
   doc.setFont('helvetica','bold'); doc.setFontSize(15);
   doc.text('ENVEXA', 15, 12);
   doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-  doc.text('Estimado de Importación · Régimen Simplificado · Aéreo China→Argentina', 15, 20);
+  const destLabel = t.country === 'UY' ? 'Uruguay' : 'Argentina';
+  doc.text(`Estimado de Importación · Régimen Simplificado · Aéreo China→${destLabel}`, 15, 20);
   y = 36;
 
   doc.setTextColor(40,40,40); doc.setFontSize(8.5);
@@ -781,15 +820,24 @@ function generatePdf(cust, t, boxes, courier) {
   doc.setDrawColor(220,220,220); doc.line(15, y, pw-15, y); y += 6;
   doc.setFont('helvetica','bold'); doc.text('ESTIMADO DE COSTOS', 15, y); y += 5; doc.setFont('helvetica','normal');
 
+  const taxRowsPdf = t.country === 'UY' ? [
+    ['Arancel de importación (18% s/CIF)',       t.d],
+    ['Tasa aduanera (9% s/CIF)',                 t.tasa],
+    ['IVA de importación (22% s/CIF+arancel)',   t.iva],
+    ['Anticipo de IVA (10% s/CIF+arancel)',      t.anticipoIva],
+  ] : [
+    ['Derechos importación (35%)',               t.d],
+    ['Tasa estadística (3%)',                    t.tasa],
+    ['IVA (21%)',                                t.iva],
+  ];
+  const destFlag = t.country === 'UY' ? 'UY' : 'AR';
   const costRows = [
     [`FOB total (mercadería)`,                                  t.fob],
     [`Flete aéreo (${fmt(t.pesoCob)} kg × USD ${t.pricePerKg}/kg)`, t.flete],
     ['Seguro (1% FOB)',                                         t.seguro],
-    ['Derechos importación (35%)',                              t.d],
-    ['Tasa estadística (3%)',                                   t.tasa],
-    ['IVA (21%)',                                               t.iva],
+    ...taxRowsPdf,
     ['Gastos Despacho Exportacion CN',                          t.gastosDoc],
-    ['Gastos Despacho Importacion AR',                         t.gastosDest],
+    [`Gastos Despacho Importacion ${destFlag}`,                 t.gastosDest],
     ['Gestión ENVEXA',                                          t.gestion],
     ['Comisión bancaria (2% s/flete)',                          t.comisionBancaria],
   ];
@@ -853,6 +901,7 @@ async function submitRequest() {
       duties_usd: t.d, tasa_est_usd: t.tasa, iva_usd: t.iva,
       total_usd: t.total, total_ars: t.ars, exchange_rate_ars: exchangeRate,
     },
+    country: selectedCountry,
     canal_especial: canalEspecial,
     compliance_warnings: warns,
     attachments,
@@ -885,12 +934,20 @@ function showMsg(text, type) {
   const el = document.getElementById('sendMsg');
   el.classList.remove('hidden');
   const c = {
-    success: 'p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800',
+    success: 'p-3 rounded-lg bg-[#FECA0D]/10 border border-[#FECA0D]/40 text-[#1c1c1c] dark:text-[#FECA0D]',
     error:   'p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800',
-    info:    'p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800',
+    info:    'p-3 rounded-lg bg-gray-50 dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700',
   };
   el.className = `mb-3 text-sm ${c[type] || c.info}`;
   el.textContent = text;
+}
+
+// ── Country ───────────────────────────────────────────────────────────────────
+function setCountry(c) {
+  selectedCountry = c;
+  document.getElementById('btnCountryAR').classList.toggle('active', c === 'AR');
+  document.getElementById('btnCountryUY').classList.toggle('active', c === 'UY');
+  recalc();
 }
 
 // ── Canal Especial ────────────────────────────────────────────────────────────

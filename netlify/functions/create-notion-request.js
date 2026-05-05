@@ -140,9 +140,9 @@ exports.handler = async (event) => {
       subject: `Tu cotización de importación · ENVEXA`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: #0b1f3a; padding: 24px; border-radius: 12px 12px 0 0;">
-            <h1 style="color: white; margin: 0; font-size: 20px;">ENVEXA · Cotización de Importación</h1>
-            <p style="color: #93c5fd; margin: 4px 0 0; font-size: 14px;">Régimen Simplificado · Aéreo China → Argentina</p>
+          <div style="background: #1c1c1c; padding: 24px; border-radius: 12px 12px 0 0;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 20px;">ENVEXA · Cotización de Importación</h1>
+            <p style="color: #FECA0D; margin: 4px 0 0; font-size: 14px;">Régimen Simplificado · Aéreo China → Argentina</p>
           </div>
           <div style="background: #f8fafc; padding: 24px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0;">
             <p style="color: #374151; font-size: 15px;">Hola <strong>${customer.name}</strong>,</p>
@@ -167,9 +167,9 @@ exports.handler = async (event) => {
                 <tr><td style="padding:4px 0; color:#6b7280;">Peso total cobrable</td><td style="text-align:right;">${n(totals?.weight_chargeable_kg)} kg</td></tr>
                 <tr><td style="padding:4px 0; color:#6b7280;">Precio x kg</td><td style="text-align:right;">USD ${n(totals?.price_per_kg)}/kg</td></tr>
 
-                <tr style="border-top: 2px solid #e2e8f0;">
-                  <td style="padding:10px 0 4px; font-weight:700; color:#111827; font-size:15px;">COSTO TOTAL</td>
-                  <td style="text-align:right; font-weight:700; color:#16a34a; font-size:16px;">${totalText}</td>
+                <tr style="border-top: 2px solid #FECA0D;">
+                  <td style="padding:10px 0 4px; font-weight:700; color:#1c1c1c; font-size:15px;">COSTO TOTAL</td>
+                  <td style="text-align:right; font-weight:700; color:#1c1c1c; font-size:16px; background:#FECA0D; padding:6px 10px; border-radius:6px;">${totalText}</td>
                 </tr>
               </table>
             </div>
