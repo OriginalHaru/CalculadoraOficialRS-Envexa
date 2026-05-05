@@ -721,7 +721,7 @@ function renderSummary(t, boxes) {
       `}
       ${head('Costos operativos')}
       ${row('Gastos Despacho Exportación 🇨🇳', t.gastosDoc)}
-      ${row('Gastos Despacho Importación 🇦🇷', t.gastosDest)}
+      ${row(`Gastos Despacho Importación ${t.country === 'UY' ? '🇺🇾' : '🇦🇷'}`, t.gastosDest)}
       ${row('Gestión ENVEXA', t.gestion)}
       ${row('Comisión bancaria (2% s/flete)', t.comisionBancaria)}
       <tr class="total-row">

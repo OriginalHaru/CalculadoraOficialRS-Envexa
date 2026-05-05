@@ -13,7 +13,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
 
-  const { customer, shipping, boxes, totals, compliance_warnings, pdfBase64, country } = body;
+  const { customer, shipping, boxes, totals, compliance_warnings, pdfBase64, country, attachments } = body;
   const countryLabel = country === 'UY' ? 'Uruguay' : 'Argentina';
   const destFlag = country === 'UY' ? '🇺🇾' : '🇦🇷';
 
@@ -121,6 +121,13 @@ exports.handler = async (event) => {
             bulleted_list_item: { rich_text: [{ type: "text", text: { content: w } }] }
           }))
         ] : []),
+        ...(attachments?.length ? [
+          { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: "📎 Archivos adjuntos" } }] } },
+          makeP(`El cliente adjuntó ${attachments.length} archivo(s). Ver email recibido para acceder a ellos.`),
+          ...attachments.map(a =>
+            makeP(`• ${a.filename}  (${(a.size_bytes / 1024).toFixed(0)} KB)`)
+          ),
+        ] : []),
       ],
     });
 
@@ -218,9 +225,10 @@ exports.handler = async (event) => {
           </div>
         </div>
       `,
-      attachments: base64Data
-        ? [{ filename: `cotizacion-envexa-${customer.name.replace(/\s+/g, "-").toLowerCase()}.pdf`, content: Buffer.from(base64Data, "base64") }]
-        : [],
+      attachments: [
+        ...(base64Data ? [{ filename: `cotizacion-envexa-${customer.name.replace(/\s+/g, "-").toLowerCase()}.pdf`, content: Buffer.from(base64Data, "base64") }] : []),
+        ...(attachments || []).map(a => ({ filename: a.filename, content: Buffer.from(a.content_base64, "base64"), contentType: a.mime_type })),
+      ],
     });
 
     return {
