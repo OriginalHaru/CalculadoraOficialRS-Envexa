@@ -82,7 +82,7 @@ exports.handler = async (event) => {
     });
 
     const boxBlocks = (boxes || []).flatMap(b => [
-      makeP(`📦 ${b.name}: ${b.weight_kg}kg real / ${(b.weight_chargeable_kg||0).toFixed(2)}kg cobrable`),
+      makeP(`📦 ${b.name}: ${b.L_cm}×${b.W_cm}×${b.H_cm} cm | ${b.weight_kg}kg real / ${(b.weight_chargeable_kg||0).toFixed(2)}kg cobrable`),
       ...(b.products || []).map(p =>
         makeP(`   • ${p.name || "?"} x${p.qty} — FOB USD ${p.fob_unit_usd}/u${p.hs_code ? ` | HS: ${p.hs_code}` : ""}`)
       ),
