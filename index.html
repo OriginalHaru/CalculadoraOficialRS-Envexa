@@ -260,7 +260,7 @@
       </h2>
       <div id="summaryContent"></div>
       <p class="text-xs text-gray-400 dark:text-gray-500 mt-4 italic">
-        * Los valores son estimativos. El costo final puede variar según el tipo de cambio oficial vigente al momento del despacho y la verificación de la mercadería.
+        * Los valores son estimativos. El costo final puede variar según el tipo de cambio crypto vigente al momento del pago y la verificación de la mercadería.
       </p>
     </section>
 
@@ -365,15 +365,15 @@ function toggleDark() {
 // ── Exchange Rate ─────────────────────────────────────────────────────────────
 async function fetchExchangeRate() {
   try {
-    const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
+    const res = await fetch('https://dolarapi.com/v1/dolares/cripto');
     if (!res.ok) throw 0;
     const data = await res.json();
     exchangeRate = parseFloat(data.venta) || 1200;
     document.getElementById('rateInfo').textContent =
-      `Tipo de cambio oficial: $${fmt(exchangeRate)} ARS/USD (dolarapi.com)`;
+      `Tipo de cambio crypto: $${fmt(exchangeRate)} ARS/USD (dolarapi.com)`;
   } catch {
     document.getElementById('rateInfo').textContent =
-      'Tipo de cambio: $1.200,00 ARS/USD (valor de referencia)';
+      'Tipo de cambio crypto: $1.200,00 ARS/USD (valor de referencia)';
   }
   recalc();
 }
@@ -730,8 +730,36 @@ function renderSummary(t, boxes) {
       </tr>
     </table>
     <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-sm flex-wrap gap-2">
-      <span class="text-gray-500 dark:text-gray-400">En pesos (TC $${fmt(exchangeRate)})</span>
+      <span class="text-gray-500 dark:text-gray-400">En pesos (dólar crypto $${fmt(exchangeRate)})</span>
       <span class="font-semibold text-base" style="color:#FECA0D">${fARS(t.ars)}</span>
+    </div>
+    ${renderUnitPrices(t, boxes)}`;
+}
+
+function renderUnitPrices(t, boxes) {
+  if (t.fob <= 0) return '';
+  const allProds = boxes.flatMap(b => b.products.filter(p => p.fob > 0));
+  if (!allProds.length) return '';
+  const mult = t.total / t.fob;
+  const destLabel = selectedCountry === 'UY' ? 'Uruguay' : 'Argentina';
+  const rows = boxes.flatMap(b =>
+    b.products
+      .filter(p => p.fob > 0)
+      .map(p => `<tr>
+        <td class="text-gray-500 dark:text-gray-400 pr-4">
+          ${p.name || 'Producto'} <span class="text-xs opacity-60">×${p.qty}</span>
+        </td>
+        <td class="text-right font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">
+          ${fUSD(p.fob * mult)}<span class="text-xs font-normal opacity-70"> / u</span>
+        </td>
+      </tr>`)
+  ).join('');
+  return `
+    <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+      <div class="text-xs font-semibold uppercase tracking-wide mb-2" style="color:#d4a800">
+        Precio unitario puesto en ${destLabel}
+      </div>
+      <table class="summary-table">${rows}</table>
     </div>`;
 }
 
@@ -854,9 +882,27 @@ function generatePdf(cust, t, boxes, courier) {
   doc.text('TOTAL ESTIMADO', 15, y);
   doc.text(fUSD(t.total), pw-15, y, { align:'right' }); y += 5;
   doc.setFontSize(8.5); doc.setTextColor(100,100,100);
-  doc.text(`En pesos: ${fARS(t.ars)} (TC $${fmt(exchangeRate)})`, 15, y); y += 7;
+  doc.text(`En pesos: ${fARS(t.ars)} (dólar crypto $${fmt(exchangeRate)})`, 15, y); y += 7;
   doc.setFont('helvetica','italic'); doc.setFontSize(7.5);
-  doc.text('* Valores estimativos. Sujeto a tipo de cambio oficial vigente al momento del despacho.', 15, y);
+  doc.text('* Valores estimativos. Sujeto a tipo de cambio crypto vigente al momento del pago.', 15, y); y += 7;
+
+  if (t.fob > 0) {
+    const mult = t.total / t.fob;
+    const destLabel = t.country === 'UY' ? 'Uruguay' : 'Argentina';
+    if (y > 250) { doc.addPage(); y = 18; }
+    doc.setDrawColor(220,220,220); doc.line(15, y, pw-15, y); y += 5;
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(40,40,40);
+    doc.text(`PRECIO UNITARIO PUESTO EN ${destLabel.toUpperCase()}`, 15, y); y += 5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+    boxes.forEach(b => {
+      b.products.filter(p => p.fob > 0).forEach(p => {
+        doc.text(`${p.name || 'Producto'}  ×${p.qty}`, 15, y);
+        doc.text(`${fUSD(p.fob * mult)} / u`, pw-15, y, { align: 'right' });
+        y += 5;
+        if (y > 275) { doc.addPage(); y = 18; }
+      });
+    });
+  }
 
   return doc.output('datauristring');
 }

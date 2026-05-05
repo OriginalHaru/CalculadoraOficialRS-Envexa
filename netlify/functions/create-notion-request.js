@@ -110,7 +110,7 @@ exports.handler = async (event) => {
         makeP(`Gestión ENVEXA: USD ${n(totals?.envexa_fee_usd)}`),
         makeP(`Comisión bancaria: USD ${n(totals?.banking_fee_usd)}`),
         makeP(`TOTAL: USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars||0).toFixed(0)}`),
-        makeP(`TC oficial: $${n(totals?.exchange_rate_ars)} ARS/USD`),
+        makeP(`Dólar crypto: $${n(totals?.exchange_rate_ars)} ARS/USD`),
         { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: "📦 Detalle de cajas" } }] } },
         ...boxBlocks,
         ...(compliance_warnings?.length ? [
@@ -185,13 +185,31 @@ exports.handler = async (event) => {
                 </tr>
               </table>
             </div>
+            ${(() => {
+              const mult = (totals?.fob_total_usd > 0) ? totals.total_usd / totals.fob_total_usd : 0;
+              if (!mult) return '';
+              const unitRows = (boxes || []).flatMap(b =>
+                (b.products || [])
+                  .filter(p => p.fob_unit_usd > 0)
+                  .map(p => `<tr>
+                    <td style="padding:4px 0; color:#374151;">${p.name || '?'} <span style="color:#9ca3af; font-size:12px;">×${p.qty}</span></td>
+                    <td style="text-align:right; font-weight:600; color:#1c1c1c;">USD ${(p.fob_unit_usd * mult).toFixed(2)} / u</td>
+                  </tr>`)
+              ).join('');
+              if (!unitRows) return '';
+              return `
+              <div style="background:white; border-radius:8px; padding:16px; margin:16px 0; border:1px solid #e2e8f0;">
+                <p style="font-size:13px; color:#6b7280; margin:0 0 10px; text-transform:uppercase; letter-spacing:0.05em;">Precio unitario puesto en ${countryLabel}</p>
+                <table style="width:100%; font-size:14px; border-collapse:collapse;">${unitRows}</table>
+              </div>`;
+            })()}
             <p style="color:#374151; font-size:13px;"><strong>Productos incluidos:</strong></p>
             <pre style="font-size:12px; color:#6b7280; background:#f1f5f9; padding:12px; border-radius:6px; white-space:pre-wrap;">${boxesSummary}</pre>
             <p style="color:#374151; font-size:13px; margin-top:16px;">
               Nuestro horario de atención es de lunes a viernes de 10:00 a 17:00 hs (hora Argentina).
             </p>
             <p style="color:#9ca3af; font-size:11px; margin-top:12px; line-height:1.5;">
-              <em>Los valores son estimativos y no constituyen una oferta formal. El costo final puede variar según el tipo de cambio oficial vigente al momento del despacho. TC usado: $${n(totals?.exchange_rate_ars)} ARS/USD.</em>
+              <em>Los valores son estimativos y no constituyen una oferta formal. El costo final puede variar según el tipo de cambio crypto vigente al momento del pago. Dólar crypto usado: $${n(totals?.exchange_rate_ars)} ARS/USD.</em>
             </p>
             <hr style="border:none; border-top:1px solid #e2e8f0; margin:20px 0;">
             <p style="color:#6b7280; font-size:12px;">
