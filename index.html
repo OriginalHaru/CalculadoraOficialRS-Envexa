@@ -178,12 +178,15 @@
 
     <!-- SECTION 3: BOXES -->
     <section class="card p-5">
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h2 class="text-base font-semibold flex items-center gap-2">
           <span class="w-6 h-6 rounded-full bg-[#FECA0D] text-[#1c1c1c] text-xs flex items-center justify-center font-bold flex-shrink-0">3</span>
           Cajas y productos
         </h2>
-        <button onclick="addBox()" class="btn-secondary">+ Agregar caja</button>
+        <div class="flex gap-2">
+          <button onclick="openImportModal()" class="btn-secondary">↓ Importar texto</button>
+          <button onclick="addBox()" class="btn-secondary">+ Agregar caja</button>
+        </div>
       </div>
       <div id="boxList"></div>
       <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">
@@ -898,7 +901,7 @@ async function submitRequest() {
       fob_total_usd: t.fob, freight_usd: t.flete, freight_rate_per_kg: t.pricePerKg, price_per_kg: t.pricePerKg,
       insurance_usd: t.seguro, documental_costs_usd: t.gastosDoc, destination_costs_usd: t.gastosDest,
       envexa_fee_usd: t.gestion, banking_fee_usd: t.comisionBancaria,
-      duties_usd: t.d, tasa_est_usd: t.tasa, iva_usd: t.iva,
+      duties_usd: t.d, tasa_est_usd: t.tasa, iva_usd: t.iva, anticipo_iva_usd: t.anticipoIva,
       total_usd: t.total, total_ars: t.ars, exchange_rate_ars: exchangeRate,
     },
     country: selectedCountry,
@@ -1049,12 +1052,124 @@ function renderAttachments() {
     </div>`).join('');
 }
 
+// ── Import from Text ─────────────────────────────────────────────────────────
+function openImportModal() {
+  document.getElementById('importTextarea').value = '';
+  document.getElementById('importError').classList.add('hidden');
+  document.getElementById('modalImport').classList.remove('hidden');
+}
+
+function closeImportModal() {
+  document.getElementById('modalImport').classList.add('hidden');
+}
+
+function parseBoxesText(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const boxes = [];
+  let cur = null;
+  for (const line of lines) {
+    const bm = line.match(/^📦\s+(.+?):\s*([\d.]+)\s*kg real/i);
+    if (bm) {
+      cur = { name: bm[1].trim(), weight_kg: parseFloat(bm[2]), products: [] };
+      boxes.push(cur);
+      continue;
+    }
+    if (cur) {
+      const pm = line.match(/^[•·]\s*(.+?)\s+x(\d+)\s+[—-]\s+FOB USD ([\d.]+)\/u(?:\s*\|\s*HS:\s*(\S+))?/i);
+      if (pm) {
+        cur.products.push({
+          name: pm[1].trim(),
+          qty:  parseInt(pm[2]),
+          fob:  parseFloat(pm[3]),
+          hs:   pm[4] || '',
+        });
+      }
+    }
+  }
+  return boxes;
+}
+
+function runImport() {
+  const text = document.getElementById('importTextarea').value;
+  const errEl = document.getElementById('importError');
+  errEl.classList.add('hidden');
+
+  const parsed = parseBoxesText(text);
+  if (!parsed.length) {
+    errEl.textContent = 'No se encontraron cajas en el texto. Revisá que el formato sea el correcto.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  // Limpiar cajas existentes
+  document.getElementById('boxList').innerHTML = '';
+  boxCounter = 0;
+  Object.keys(prodCounters).forEach(k => delete prodCounters[k]);
+
+  parsed.forEach(b => {
+    addBox();
+    const id = boxCounter;
+
+    if (b.name) document.getElementById(`bn-${id}`).value = b.name;
+    document.getElementById(`bW2-${id}`).value = b.weight_kg || '';
+
+    // El primer producto ya lo agrega addBox()
+    if (b.products.length > 0) {
+      const pid1 = prodCounters[id];
+      document.getElementById(`pn-${id}-${pid1}`).value = b.products[0].name;
+      document.getElementById(`pq-${id}-${pid1}`).value = b.products[0].qty;
+      document.getElementById(`pf-${id}-${pid1}`).value = b.products[0].fob;
+      document.getElementById(`ph-${id}-${pid1}`).value = b.products[0].hs;
+    }
+
+    for (let i = 1; i < b.products.length; i++) {
+      addProduct(id);
+      const pid = prodCounters[id];
+      document.getElementById(`pn-${id}-${pid}`).value = b.products[i].name;
+      document.getElementById(`pq-${id}-${pid}`).value = b.products[i].qty;
+      document.getElementById(`pf-${id}-${pid}`).value = b.products[i].fob;
+      document.getElementById(`ph-${id}-${pid}`).value = b.products[i].hs;
+    }
+  });
+
+  closeImportModal();
+  recalc();
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   fetchExchangeRate();
   addBox();
 });
 </script>
+
+<!-- MODAL: IMPORTAR TEXTO -->
+<div id="modalImport" class="modal-backdrop hidden" onclick="if(event.target===this)closeImportModal()">
+  <div class="modal-content" style="max-width:36rem; width:100%;">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Importar cajas desde texto</h3>
+      <button onclick="closeImportModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl leading-none">&times;</button>
+    </div>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+      Pegá el detalle de cajas y productos con el formato que usa ENVEXA:
+    </p>
+    <div class="rounded-lg p-3 mb-3 text-xs font-mono whitespace-pre bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 leading-relaxed">📦 Caja 1: 2.5kg real / 3.00kg cobrable
+   • Remera x10 — FOB USD 8/u
+   • Pantalón x5 — FOB USD 15/u | HS: 6203.42
+📦 Caja 2: 1.2kg real / 1.50kg cobrable
+   • Accesorio x3 — FOB USD 25/u</div>
+    <textarea id="importTextarea" class="input-field" rows="8"
+      placeholder="Pegá el texto acá..." style="font-family:monospace; font-size:0.8rem; resize:vertical;"></textarea>
+    <div id="importError" class="hidden mt-2 text-xs text-red-500"></div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="closeImportModal()" class="btn-secondary" style="flex:1">Cancelar</button>
+      <button onclick="runImport()" class="btn-primary" style="flex:2">Importar cajas</button>
+    </div>
+    <p class="text-xs text-gray-400 dark:text-gray-500 mt-3 italic">
+      Las dimensiones de las cajas (largo, ancho, alto) no se incluyen en el texto — completalas manualmente después de importar.
+    </p>
+  </div>
+</div>
 
 <!-- BOTÓN FLOTANTE WHATSAPP -->
 <a href="https://wa.me/5491176388705?text=Tengo%20una%20duda%20sobre%20la%20calculadora%20de%20Courier"

@@ -13,7 +13,9 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
 
-  const { customer, shipping, boxes, totals, compliance_warnings, pdfBase64 } = body;
+  const { customer, shipping, boxes, totals, compliance_warnings, pdfBase64, country } = body;
+  const countryLabel = country === 'UY' ? 'Uruguay' : 'Argentina';
+  const destFlag = country === 'UY' ? '🇺🇾' : '🇦🇷';
 
   if (!customer?.name || !customer?.email) {
     return { statusCode: 400, body: JSON.stringify({ error: "Missing required customer fields" }) };
@@ -62,6 +64,9 @@ exports.handler = async (event) => {
         "Precio x KG": {
           number: totals?.price_per_kg || 0
         },
+        "Pais": {
+          select: { name: countryLabel }
+        },
       },
     });
 
@@ -90,11 +95,18 @@ exports.handler = async (event) => {
         makeP(`Courier: ${shipping?.courier}`),
         makeP(`Flete aéreo: USD ${n(totals?.freight_usd)} (USD ${n(totals?.freight_rate_per_kg)}/kg)`),
         makeP(`Seguro: USD ${n(totals?.insurance_usd)}`),
-        makeP(`DAI 35%: USD ${n(totals?.duties_usd)}`),
-        makeP(`Tasa Est. 3%: USD ${n(totals?.tasa_est_usd)}`),
-        makeP(`IVA 21%: USD ${n(totals?.iva_usd)}`),
+        ...(country === 'UY' ? [
+          makeP(`Arancel de importación 18% (s/CIF): USD ${n(totals?.duties_usd)}`),
+          makeP(`Tasa aduanera 9% (s/CIF): USD ${n(totals?.tasa_est_usd)}`),
+          makeP(`IVA importación 22% (s/CIF+arancel): USD ${n(totals?.iva_usd)}`),
+          makeP(`Anticipo de IVA 10% (s/CIF+arancel): USD ${n(totals?.anticipo_iva_usd)}`),
+        ] : [
+          makeP(`DAI 35%: USD ${n(totals?.duties_usd)}`),
+          makeP(`Tasa Est. 3%: USD ${n(totals?.tasa_est_usd)}`),
+          makeP(`IVA 21%: USD ${n(totals?.iva_usd)}`),
+        ]),
         makeP(`Gastos Despacho Exportación 🇨🇳: USD ${n(totals?.documental_costs_usd)}`),
-        makeP(`Gastos Despacho Importación 🇦🇷: USD ${n(totals?.destination_costs_usd)}`),
+        makeP(`Gastos Despacho Importación ${destFlag}: USD ${n(totals?.destination_costs_usd)}`),
         makeP(`Gestión ENVEXA: USD ${n(totals?.envexa_fee_usd)}`),
         makeP(`Comisión bancaria: USD ${n(totals?.banking_fee_usd)}`),
         makeP(`TOTAL: USD ${n(totals?.total_usd)} / ARS ${(totals?.total_ars||0).toFixed(0)}`),
@@ -142,7 +154,7 @@ exports.handler = async (event) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #1c1c1c; padding: 24px; border-radius: 12px 12px 0 0;">
             <h1 style="color: #ffffff; margin: 0; font-size: 20px;">ENVEXA · Cotización de Importación</h1>
-            <p style="color: #FECA0D; margin: 4px 0 0; font-size: 14px;">Régimen Simplificado · Aéreo China → Argentina</p>
+            <p style="color: #FECA0D; margin: 4px 0 0; font-size: 14px;">Régimen Simplificado · Aéreo China → ${countryLabel}</p>
           </div>
           <div style="background: #f8fafc; padding: 24px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0;">
             <p style="color: #374151; font-size: 15px;">Hola <strong>${customer.name}</strong>,</p>
