@@ -291,12 +291,12 @@
       </div>
       <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Algunos productos requieren documentación adicional y salen por un canal especial de Aduana. Ejemplos comunes:</p>
       <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 list-disc list-inside mb-3">
-        <li>Alimentos y suplementos dietarios</li>
-        <li>Cosméticos y productos de higiene personal</li>
-        <li>Productos médicos o farmacéuticos</li>
-        <li>Juguetes</li>
-        <li>Electrónica con certificación obligatoria</li>
-        <li>Productos textiles con requisitos de etiquetado</li>
+        <li>Productos de madera</li>
+        <li>Productos magnéticos o con imanes (imanes fuertes no pueden ingresarse)</li>
+        <li>Productos eléctricos con batería menor a 100 Wh (solo una batería de litio por producto)</li>
+        <li>Productos con marca (solo si la marca es muy poco reconocida)</li>
+        <li>Productos con motores pequeños (deben empaquetarse correctamente, sin exposición del motor)</li>
+        <li>Powerbanks</li>
       </ul>
       <p class="text-xs text-gray-500 dark:text-gray-400 italic">Si no estás seguro, seleccioná "Sí" y nuestro equipo te va a asesorar.</p>
       <button onclick="closeInfoModal()" class="mt-4 btn-primary">Entendido</button>
@@ -344,9 +344,9 @@ let attachments = [];
 
 const RESTRICTED_HS = ['8471','8517','8542','9013','9014','8543','8803','8802','8525','8528'];
 const FREIGHT_TIERS = [
-  { max_kg: 100,      price_per_kg: 15 },
-  { max_kg: 200,      price_per_kg: 14 },
-  { max_kg: Infinity, price_per_kg: 13 },
+  { max_kg: 100,      price_per_kg: 14 },
+  { max_kg: 200,      price_per_kg: 13 },
+  { max_kg: Infinity, price_per_kg: 12 },
 ];
 const ENVEXA_FEE_USD = 150;
 const DOCUMENTAL_FEE = 29;
@@ -589,6 +589,8 @@ function calcTotals(boxes) {
   const comisionBancaria = flete * 0.02;
 
   const cif = fob + flete + seguro;
+  // Base arancelaria: aduana argentina valora el flete a USD 3/kg independientemente del flete real
+  const cifAduanero = fob + (pesoCob * 3) + seguro;
 
   let d, tasa, iva, anticipoIva, total;
 
@@ -601,10 +603,10 @@ function calcTotals(boxes) {
     anticipoIva = base2 * 0.10;           // Anticipo de IVA 10%
     total = cif + d + tasa + iva + anticipoIva + gastosDoc + gastosDest + gestion + comisionBancaria;
   } else {
-    // Argentina
-    d    = cif * 0.35;
-    tasa = (cif + d) * 0.03;
-    iva  = (cif + d + tasa) * 0.21;
+    // Argentina: impuestos se calculan sobre cifAduanero (flete fiscal 3 USD/kg)
+    d    = cifAduanero * 0.35;
+    tasa = (cifAduanero + d) * 0.03;
+    iva  = (cifAduanero + d + tasa) * 0.21;
     anticipoIva = 0;
     total = cif + d + tasa + iva + gastosDoc + gastosDest + gestion + comisionBancaria;
   }
