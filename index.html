@@ -348,8 +348,8 @@ const FREIGHT_TIERS = [
   { max_kg: 200,      price_per_kg: 13 },
   { max_kg: Infinity, price_per_kg: 12 },
 ];
-const ENVEXA_FEE_USD = 150;
-const DOCUMENTAL_FEE = 29;
+const ENVEXA_FEE_USD = 100;
+const DOCUMENTAL_FEE = 50;
 
 // ── Dark Mode ─────────────────────────────────────────────────────────────────
 function toggleDark() {
@@ -583,7 +583,7 @@ function calcTotals(boxes) {
   const flete  = pesoCob * pricePerKg;
   const seguro = 0.01 * fob;
 
-  const gastosDoc      = (pesoCob > 90 || fob > 700) ? DOCUMENTAL_FEE : 0;
+  const gastosDoc      = DOCUMENTAL_FEE;
   const gastosDest     = 85;
   const gestion        = ENVEXA_FEE_USD;
   const comisionBancaria = flete * 0.02;
